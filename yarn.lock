@@ -79,6 +79,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@napi-rs/triples@npm:^1.0.3":
+  version: 1.1.0
+  resolution: "@napi-rs/triples@npm:1.1.0"
+  checksum: 8da77d47ec15704b1936f5f3995951459fc5d604bf2ed400d9579e3356dc0aeb486b217a503f675dda653221751e1fd5dcaaf8de1bab3c71853e8cfd72309709
+  languageName: node
+  linkType: hard
+
+"@node-rs/helper@npm:^1.0.0":
+  version: 1.2.1
+  resolution: "@node-rs/helper@npm:1.2.1"
+  dependencies:
+    "@napi-rs/triples": ^1.0.3
+  checksum: c7b96e46df8a4195e62e51b6f60ed05aff398653c270dc9cffaed749303a4c428215d5826de8511b57cf66f2b0165fb3544fb2aec2aaf385c13ac3b9468bb000
+  languageName: node
+  linkType: hard
+
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
@@ -130,6 +146,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@poviolabs/ecs-deploy-cli@workspace:."
   dependencies:
+    "@swc/core": ^1.2.118
     "@types/eslint": ^8.2.1
     "@types/eslint-plugin-prettier": ^3
     "@types/node": ^16.11.12
@@ -156,6 +173,136 @@ __metadata:
     ecs-deploy-cli: bin/spa-deploy-cli
   languageName: unknown
   linkType: soft
+
+"@swc/core-android-arm64@npm:^1.2.118":
+  version: 1.2.118
+  resolution: "@swc/core-android-arm64@npm:1.2.118"
+  conditions: os=android & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@swc/core-darwin-arm64@npm:^1.2.118":
+  version: 1.2.118
+  resolution: "@swc/core-darwin-arm64@npm:1.2.118"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@swc/core-darwin-x64@npm:^1.2.118":
+  version: 1.2.118
+  resolution: "@swc/core-darwin-x64@npm:1.2.118"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@swc/core-freebsd-x64@npm:^1.2.118":
+  version: 1.2.118
+  resolution: "@swc/core-freebsd-x64@npm:1.2.118"
+  conditions: os=freebsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-arm-gnueabihf@npm:^1.2.118":
+  version: 1.2.118
+  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.2.118"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-arm64-gnu@npm:^1.2.118":
+  version: 1.2.118
+  resolution: "@swc/core-linux-arm64-gnu@npm:1.2.118"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-arm64-musl@npm:^1.2.118":
+  version: 1.2.118
+  resolution: "@swc/core-linux-arm64-musl@npm:1.2.118"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-x64-gnu@npm:^1.2.118":
+  version: 1.2.118
+  resolution: "@swc/core-linux-x64-gnu@npm:1.2.118"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-x64-musl@npm:^1.2.118":
+  version: 1.2.118
+  resolution: "@swc/core-linux-x64-musl@npm:1.2.118"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@swc/core-win32-arm64-msvc@npm:^1.2.118":
+  version: 1.2.118
+  resolution: "@swc/core-win32-arm64-msvc@npm:1.2.118"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@swc/core-win32-ia32-msvc@npm:^1.2.118":
+  version: 1.2.118
+  resolution: "@swc/core-win32-ia32-msvc@npm:1.2.118"
+  conditions: os=win32 & cpu=ia32
+  languageName: node
+  linkType: hard
+
+"@swc/core-win32-x64-msvc@npm:^1.2.118":
+  version: 1.2.118
+  resolution: "@swc/core-win32-x64-msvc@npm:1.2.118"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@swc/core@npm:^1.2.118":
+  version: 1.2.118
+  resolution: "@swc/core@npm:1.2.118"
+  dependencies:
+    "@node-rs/helper": ^1.0.0
+    "@swc/core-android-arm64": ^1.2.118
+    "@swc/core-darwin-arm64": ^1.2.118
+    "@swc/core-darwin-x64": ^1.2.118
+    "@swc/core-freebsd-x64": ^1.2.118
+    "@swc/core-linux-arm-gnueabihf": ^1.2.118
+    "@swc/core-linux-arm64-gnu": ^1.2.118
+    "@swc/core-linux-arm64-musl": ^1.2.118
+    "@swc/core-linux-x64-gnu": ^1.2.118
+    "@swc/core-linux-x64-musl": ^1.2.118
+    "@swc/core-win32-arm64-msvc": ^1.2.118
+    "@swc/core-win32-ia32-msvc": ^1.2.118
+    "@swc/core-win32-x64-msvc": ^1.2.118
+  dependenciesMeta:
+    "@swc/core-android-arm64":
+      optional: true
+    "@swc/core-darwin-arm64":
+      optional: true
+    "@swc/core-darwin-x64":
+      optional: true
+    "@swc/core-freebsd-x64":
+      optional: true
+    "@swc/core-linux-arm-gnueabihf":
+      optional: true
+    "@swc/core-linux-arm64-gnu":
+      optional: true
+    "@swc/core-linux-arm64-musl":
+      optional: true
+    "@swc/core-linux-x64-gnu":
+      optional: true
+    "@swc/core-linux-x64-musl":
+      optional: true
+    "@swc/core-win32-arm64-msvc":
+      optional: true
+    "@swc/core-win32-ia32-msvc":
+      optional: true
+    "@swc/core-win32-x64-msvc":
+      optional: true
+  checksum: 5ec8c6d1fb4ea656dd4352b73674fc9bfd3a56a89e3f408924ebb358c3d21fe2827b8ec3de5bd2aefdad8d790197ff1cd60e2d99c359b73efb8442ebd3eeeb9b
+  languageName: node
+  linkType: hard
 
 "@tootallnate/once@npm:1":
   version: 1.1.2
