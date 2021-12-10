@@ -1,0 +1,63 @@
+diff --git a/dist/index.d.ts b/dist/index.d.ts
+index d54679455f71b05173e51f0e44d54ad14ff640a8..d734fa45d99c09b4031fcf7fd519f66add3d1643 100755
+--- a/dist/index.d.ts
++++ b/dist/index.d.ts
+@@ -10,11 +10,13 @@ export interface IOptions {
+     currentWorkingDirectory?: string;
+     echo?: boolean;
+     env?: NodeJS.ProcessEnv;
++    stdin?: string
+ }
+ export declare class Options implements IOptions {
+     machineName?: string | undefined;
+     currentWorkingDirectory?: string | undefined;
+     echo: boolean;
+     env?: NodeJS.ProcessEnv | undefined;
++    stdin?: string
+     constructor(machineName?: string | undefined, currentWorkingDirectory?: string | undefined, echo?: boolean, env?: NodeJS.ProcessEnv | undefined);
+ }
+diff --git a/dist/index.js b/dist/index.js
+index c1a6cf9665a7181c5ab9fb579e7e773d325b44a8..c084acde4f5cb3503280416ce09be67638f9581c 100755
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -157,6 +157,7 @@ exports.dockerCommand = (command, options = {
+     echo: true,
+     env: undefined,
+     machineName: undefined,
++    stdin: undefined,
+ }) => __awaiter(this, void 0, void 0, function* () {
+     let machineconfig = "";
+     if (options.machineName) {
+@@ -177,6 +178,10 @@ exports.dockerCommand = (command, options = {
+             }
+             resolve(stdout);
+         });
++        if (options.stdin) {
++            childProcess.stdin.write(options.stdin);
++            childProcess.stdin.end();
++        }
+         if (options.echo) {
+             childProcess.stdout.on("data", (chunk) => {
+                 process.stdout.write(chunk.toString());
+@@ -197,6 +202,7 @@ class Docker {
+         echo: true,
+         env: undefined,
+         machineName: undefined,
++        stdin: undefined,
+     }) {
+         this.options = options;
+     }
+@@ -206,11 +212,12 @@ class Docker {
+ }
+ exports.Docker = Docker;
+ class Options {
+-    constructor(machineName, currentWorkingDirectory, echo = true, env) {
++    constructor(machineName, currentWorkingDirectory, echo = true, env, stdin) {
+         this.machineName = machineName;
+         this.currentWorkingDirectory = currentWorkingDirectory;
+         this.echo = echo;
+         this.env = env;
++        this.stdin = stdin;
+     }
+ }
+ exports.Options = Options;

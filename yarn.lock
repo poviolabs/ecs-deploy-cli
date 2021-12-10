@@ -156,7 +156,7 @@ __metadata:
     "@vercel/ncc": ^0.33.0
     aws-sdk: ^2.1044.0
     chalk: ^4.1.2
-    docker-cli-js: ^2.8.0
+    docker-cli-js: 2.8.0
     dotenv: ^10.0.0
     eslint: ^8.4.1
     eslint-config-prettier: ^8.3.0
@@ -900,7 +900,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"docker-cli-js@npm:^2.8.0":
+"docker-cli-js@npm:2.8.0":
   version: 2.8.0
   resolution: "docker-cli-js@npm:2.8.0"
   dependencies:
@@ -909,6 +909,18 @@ __metadata:
     lodash.snakecase: ^4.1.1
     nodeify-ts: 1.0.6
   checksum: 965ea258ef15f390ea676a2fd1b43f9b35f564f38277d32af31c85f33f535f1f6f9882b297bd63df37aa81090d191a9a4abccd9e6f758680709426d9135262c4
+  languageName: node
+  linkType: hard
+
+"docker-cli-js@patch:docker-cli-js@npm:2.8.0#.yarn/patches/docker-cli-js-npm-2.8.0-01a8fa61d6::locator=%40poviolabs%2Fecs-deploy-cli%40workspace%3A.":
+  version: 2.8.0
+  resolution: "docker-cli-js@patch:docker-cli-js@npm%3A2.8.0#.yarn/patches/docker-cli-js-npm-2.8.0-01a8fa61d6::version=2.8.0&hash=40e5e5&locator=%40poviolabs%2Fecs-deploy-cli%40workspace%3A."
+  dependencies:
+    cli-table-2-json: 1.0.13
+    dockermachine-cli-js: 3.0.5
+    lodash.snakecase: ^4.1.1
+    nodeify-ts: 1.0.6
+  checksum: d503484ebd3bfd95ff6f7d1186b2295cc94483543a6fe292abbbf35b896dd4dbfb3847400a4efb4d7707bd64de67f2667675944c8ee884f6412e28bc92e02c7c
   languageName: node
   linkType: hard
 
