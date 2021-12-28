@@ -98,13 +98,20 @@ exports.command = {
         const argv = (await _argv);
         await cli_helper_1.default.printEnvironment(argv);
         cli_helper_1.default.banner("Build Environment");
-        const isPristine = await (0, git_helper_1.getIsPristine)(argv.pwd);
-        if (isPristine) {
+        const gitChanges = await (0, git_helper_1.getGitChanges)(argv.pwd);
+        if (gitChanges !== "") {
             if (argv.ignoreGitChanges) {
                 cli_helper_1.default.warning("Changes detected in .git");
             }
             else {
-                throw new Error("Detected un-committed code in git");
+                if (gitChanges === undefined) {
+                    cli_helper_1.default.error("Error detecting Git");
+                }
+                else {
+                    cli_helper_1.default.banner("Detected Changes in Git - Stage must be clean to build!");
+                    console.log(gitChanges);
+                }
+                process.exit(1);
             }
         }
         cli_helper_1.default.variable("RELEASE", argv.release);
@@ -148,7 +155,7 @@ exports.command = {
                 }
             }
             await docker_helper_1.default.imagePush(imageName);
-            cli_helper_1.default.info(`Done! Deploy the service with yarn ecs:deploy --stage ${argv.stage}`);
+            cli_helper_1.default.info(`Done! Deploy the service with yarn ecs-deploy-cli --stage ${argv.stage}`);
         }
         catch (e) {
             throw e;
