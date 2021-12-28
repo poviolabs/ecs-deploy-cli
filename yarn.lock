@@ -152,11 +152,12 @@ __metadata:
     "@types/eslint-plugin-prettier": ^3
     "@types/node": ^16.11.12
     "@types/prettier": ^2.4.2
+    "@types/prompt-sync": ^4.1.1
     "@types/semver": ^7.3.9
     "@types/yargs": ^17.0.7
     "@typescript-eslint/eslint-plugin": ^5.6.0
     "@typescript-eslint/parser": ^5.6.0
-    "@vercel/ncc": ^0.33.0
+    "@vercel/ncc": ^0.33.1
     aws-sdk: ^2.1044.0
     chalk: ^4.1.2
     diff: ^5.0.0
@@ -166,8 +167,6 @@ __metadata:
     eslint-config-prettier: ^8.3.0
     eslint-plugin-import-helpers: ^1.2.0
     eslint-plugin-prettier: ^4.0.0
-    fast-glob: ^3.2.7
-    mime-types: ^2.1.34
     prettier: ^2.5.1
     prompt-sync: ^4.2.0
     reflect-metadata: ^0.1.13
@@ -177,7 +176,7 @@ __metadata:
     typescript: 4.5.2
     yargs: ^17.3.0
   bin:
-    ecs-deploy-cli: bin/ecs-deploy-cli
+    ecs-deploy-cli: ./bin/index.js
   languageName: unknown
   linkType: soft
 
@@ -417,6 +416,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/prompt-sync@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "@types/prompt-sync@npm:4.1.1"
+  checksum: 483254d80da52af768293e1a0c2f6d231f27161bc25aca855b252b054ba69435507e4a0a5a0f49dc571c15dfb767ef34ba2e7fbf1aa1a5ff8d1fb3a7093fb072
+  languageName: node
+  linkType: hard
+
 "@types/semver@npm:^7.3.9":
   version: 7.3.9
   resolution: "@types/semver@npm:7.3.9"
@@ -549,14 +555,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vercel/ncc@npm:^0.33.0":
-  version: 0.33.0
-  resolution: "@vercel/ncc@npm:0.33.0"
+"@vercel/ncc@npm:^0.33.1":
+  version: 0.33.1
+  resolution: "@vercel/ncc@npm:0.33.1"
   dependencies:
     node-gyp: latest
   bin:
     ncc: dist/ncc/cli.js
-  checksum: effe4c3b3a745be43013411ba3bfdc7f6ddfb7b10ba9b71aea8ddec2b86b89b13e650407960d78583d0281df108e51bf5dc397fd85c2fc8c78520798c813f56e
+  checksum: 62af9ce257df1ac61acff4facfbb8f3f367a4df02705d608fe43ec5e9fa231e3fcb06a9e494c4e3b3e76441d97cc547aa2c434a5706a02d05f18c32c19dd7929
   languageName: node
   linkType: hard
 
@@ -1245,7 +1251,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:^3.1.1, fast-glob@npm:^3.2.7":
+"fast-glob@npm:^3.1.1":
   version: 3.2.7
   resolution: "fast-glob@npm:3.2.7"
   dependencies:
@@ -1736,22 +1742,6 @@ __metadata:
     braces: ^3.0.1
     picomatch: ^2.2.3
   checksum: ef3d1c88e79e0a68b0e94a03137676f3324ac18a908c245a9e5936f838079fcc108ac7170a5fadc265a9c2596963462e402841406bda1a4bb7b68805601d631c
-  languageName: node
-  linkType: hard
-
-"mime-db@npm:1.51.0":
-  version: 1.51.0
-  resolution: "mime-db@npm:1.51.0"
-  checksum: 613b1ac9d6e725cc24444600b124a7f1ce6c60b1baa654f39a3e260d0995a6dffc5693190217e271af7e2a5612dae19f2a73f3e316707d797a7391165f7ef423
-  languageName: node
-  linkType: hard
-
-"mime-types@npm:^2.1.34":
-  version: 2.1.34
-  resolution: "mime-types@npm:2.1.34"
-  dependencies:
-    mime-db: 1.51.0
-  checksum: 67013de9e9d6799bde6d669d18785b7e18bcd212e710d3e04a4727f92f67a8ad4e74aee24be28b685adb794944814bde649119b58ee3282ffdbee58f9278d9f3
   languageName: node
   linkType: hard
 
