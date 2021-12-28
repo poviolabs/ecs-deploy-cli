@@ -23,16 +23,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ECS_DEPLOY_CLI = void 0;
-exports.ECS_DEPLOY_CLI = "0.8";
 const yargs_1 = __importDefault(require("yargs"));
 const helpers_1 = require("yargs/helpers");
 const ecs_build_1 = require("./ecs-build");
 const ecs_deploy_1 = require("./ecs-deploy");
 const ecs_watch_1 = require("./ecs-watch");
 const cli = __importStar(require("./cli.helper"));
+const { version } = require("../package.json");
 (0, yargs_1.default)((0, helpers_1.hideBin)(process.argv))
-    .version(exports.ECS_DEPLOY_CLI)
+    .version(version)
     .command(ecs_build_1.command)
     .command(ecs_deploy_1.command)
     .command(ecs_watch_1.command)

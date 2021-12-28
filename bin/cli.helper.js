@@ -28,8 +28,8 @@ const Console = __importStar(require("console"));
 const prompt_sync_1 = __importDefault(require("prompt-sync"));
 const process_1 = __importDefault(require("process"));
 const git_helper_1 = require("./git.helper");
-const index_1 = require("./index");
 const diff_1 = require("diff");
+const { version } = require("../package.json");
 exports.chk = new chalk_1.default.Instance({ level: 2 });
 const log = Console.log;
 const prompt = (0, prompt_sync_1.default)({ sigint: true });
@@ -111,7 +111,7 @@ async function confirm(message) {
 }
 exports.confirm = confirm;
 async function printEnvironment(argv) {
-    banner(`ECS Build ${index_1.ECS_DEPLOY_CLI}`);
+    banner(`ECS Build ${version}`);
     variable("PWD", argv.pwd);
     variable("NODE_VERSION", process_1.default.version);
     variable("GIT_CLI_VERSION", await (0, git_helper_1.getGitVersion)(argv.pwd));
