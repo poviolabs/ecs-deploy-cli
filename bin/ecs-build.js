@@ -3,11 +3,30 @@
  Build the Docker image and deploy it to ECR
   - Skip building if the release (git version) already exists
  */
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
 };
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
@@ -17,11 +36,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.command = void 0;
-const cli_helper_1 = __importDefault(require("./cli.helper"));
+const cli_helper_1 = __importStar(require("./cli.helper"));
 const git_helper_1 = require("./git.helper");
+const docker_helper_1 = require("./docker.helper");
 const yargs_helper_1 = require("./yargs.helper");
 const aws_helper_1 = require("./aws.helper");
-const docker_helper_1 = __importDefault(require("./docker.helper"));
+const docker_helper_2 = __importDefault(require("./docker.helper"));
 class EcsBuildOptions extends yargs_helper_1.Options {
 }
 __decorate([
@@ -97,6 +117,7 @@ exports.command = {
     handler: async (_argv) => {
         const argv = (await _argv);
         await cli_helper_1.default.printEnvironment(argv);
+        (0, cli_helper_1.variable)("DOCKER_VERSION", await (0, docker_helper_1.version)());
         cli_helper_1.default.banner("Build Environment");
         const gitChanges = await (0, git_helper_1.getGitChanges)(argv.pwd);
         if (gitChanges !== "") {
@@ -132,13 +153,13 @@ exports.command = {
         if (argv.dockerPath !== "Dockerfile") {
             cli_helper_1.default.variable("DOCKER_PATH", argv.dockerPath, "Dockerfile");
         }
-        cli_helper_1.default.variable("DOCKER_VERSION", await docker_helper_1.default.version());
-        if (await docker_helper_1.default.imageExists(imageName)) {
+        cli_helper_1.default.variable("DOCKER_VERSION", await docker_helper_2.default.version());
+        if (await docker_helper_2.default.imageExists(imageName)) {
             cli_helper_1.default.info("Reusing docker image");
         }
         else {
             cli_helper_1.default.info("Building docker image");
-            await docker_helper_1.default.imageBuild(imageName, argv.release, argv.dockerPath);
+            await docker_helper_2.default.imageBuild(imageName, argv.release, argv.dockerPath);
         }
         cli_helper_1.default.banner("Push step");
         cli_helper_1.default.info("Setting up AWS Docker Auth...");
@@ -146,7 +167,7 @@ exports.command = {
             region: argv.awsRegion,
         });
         try {
-            await docker_helper_1.default.login(ecrCredentials.endpoint, "AWS", ecrCredentials.password);
+            await docker_helper_2.default.login(ecrCredentials.endpoint, "AWS", ecrCredentials.password);
             cli_helper_1.default.info("AWS ECR Docker Login succeeded");
             if (!argv.ci) {
                 if (!(await cli_helper_1.default.confirm("Press enter to upload image to ECR..."))) {
@@ -154,14 +175,14 @@ exports.command = {
                     return;
                 }
             }
-            await docker_helper_1.default.imagePush(imageName);
+            await docker_helper_2.default.imagePush(imageName);
             cli_helper_1.default.info(`Done! Deploy the service with yarn ecs-deploy-cli --stage ${argv.stage}`);
         }
         catch (e) {
             throw e;
         }
         finally {
-            await docker_helper_1.default.logout(ecrCredentials.endpoint);
+            await docker_helper_2.default.logout(ecrCredentials.endpoint);
         }
     },
 };
