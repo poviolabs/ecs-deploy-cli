@@ -120,19 +120,21 @@ exports.command = {
         (0, cli_helper_1.variable)("DOCKER_VERSION", await (0, docker_helper_1.version)());
         cli_helper_1.default.banner("Build Environment");
         const gitChanges = await (0, git_helper_1.getGitChanges)(argv.pwd);
-        // if (gitChanges !== "") {
-        //   if (argv.ignoreGitChanges) {
-        //     cli.warning("Changes detected in .git");
-        //   } else {
-        //     if (gitChanges === undefined) {
-        //       cli.error("Error detecting Git");
-        //     } else {
-        //       cli.banner("Detected Changes in Git - Stage must be clean to build!");
-        //       console.log(gitChanges);
-        //     }
-        //     process.exit(1);
-        //   }
-        // }
+        if (gitChanges !== "") {
+            if (argv.ignoreGitChanges) {
+                cli_helper_1.default.warning("Changes detected in .git");
+            }
+            else {
+                if (gitChanges === undefined) {
+                    cli_helper_1.default.error("Error detecting Git");
+                }
+                else {
+                    cli_helper_1.default.banner("Detected Changes in Git - Stage must be clean to build!");
+                    console.log(gitChanges);
+                }
+                process.exit(1);
+            }
+        }
         cli_helper_1.default.variable("RELEASE", argv.release);
         // load ECR details
         const imageName = `${argv.awsAccountId}.dkr.ecr.${argv.awsRegion}.amazonaws.com/${argv.ecrRepoName}:${argv.release}`;
@@ -160,7 +162,7 @@ exports.command = {
             await docker_helper_2.default.login(ecrCredentials.endpoint, "AWS", ecrCredentials.password);
             cli_helper_1.default.info("AWS ECR Docker Login succeeded");
             if (process.arch.includes("arm")) {
-                cli_helper_1.default.info("Building docker image for ARM arch and pushing to registry");
+                cli_helper_1.default.info("Building docker image from ARM arch and pushing to registry");
                 // With ARM architecture, image will get always build and immediately pushed to registry, since Docker still does not support multi arch images locally
                 await docker_helper_2.default.imageBuildArm(imageName, argv.release, argv.dockerPath);
             }
