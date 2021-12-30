@@ -4,7 +4,7 @@
 
 - [x] happy path build for ECR
 - [ ] build/deploy for next.js
-- [ ] mac m1 support for docker build
+- [x] mac m1 support for docker build
 - [x] merge build and deploy into single bin
 - [x] `STAGE=app-dev yarn ecs:build`
 - [x] `STAGE=app-dev yarn ecs:deploy`

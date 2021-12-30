@@ -124,14 +124,6 @@ export const command: yargs.CommandModule = {
 
     cli.variable("DOCKER_VERSION", await docker.version());
 
-    if (await docker.imageExists(imageName)) {
-      cli.info("Reusing docker image");
-    } else {
-      cli.info("Building docker image");
-      await docker.imageBuild(imageName, argv.release, argv.dockerPath);
-    }
-
-    cli.banner("Push step");
     cli.info("Setting up AWS Docker Auth...");
     const ecrCredentials = await ecrGetDockerCredentials({
       region: argv.awsRegion,
@@ -144,15 +136,28 @@ export const command: yargs.CommandModule = {
         ecrCredentials.password
       );
       cli.info("AWS ECR Docker Login succeeded");
-
-      if (!argv.ci) {
-        if (!(await cli.confirm("Press enter to upload image to ECR..."))) {
-          cli.info("Canceled");
-          return;
+      if (process.arch.includes("arm")) {
+        cli.info("Building docker image from ARM arch and pushing to registry");
+        // With ARM architecture, image will get always build and immediately pushed to registry, since Docker still does not support multi arch images locally
+        await docker.imageBuildArm(imageName, argv.release, argv.dockerPath);
+      } else {
+        if (await docker.imageExists(imageName)) {
+          cli.info("Reusing docker image");
+        } else {
+          cli.info("Building docker image");
+          await docker.imageBuild(imageName, argv.release, argv.dockerPath);
         }
-      }
+        cli.banner("Push step");
 
-      await docker.imagePush(imageName);
+        if (!argv.ci) {
+          if (!(await cli.confirm("Press enter to upload image to ECR..."))) {
+            cli.info("Canceled");
+            return;
+          }
+        }
+
+        await docker.imagePush(imageName);
+      }
 
       cli.info(
         `Done! Deploy the service with yarn ecs-deploy-cli --stage ${argv.stage}`

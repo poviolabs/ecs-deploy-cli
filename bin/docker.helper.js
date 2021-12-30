@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logout = exports.login = exports.imagePush = exports.imageBuild = exports.imageExists = exports.version = void 0;
+exports.logout = exports.login = exports.imagePush = exports.imageBuildArm = exports.imageBuild = exports.imageExists = exports.version = void 0;
 const docker_cli_js_1 = require("docker-cli-js");
 const cli_helper_1 = __importDefault(require("./cli.helper"));
 const options = {
@@ -35,6 +35,14 @@ async function imageBuild(imageName, release, dockerFile) {
     await (0, docker_cli_js_1.dockerCommand)(`build --progress plain -t "${imageName}" -f "${dockerFile}" . --build-arg RELEASE="${release}"`, { echo: true });
 }
 exports.imageBuild = imageBuild;
+async function imageBuildArm(imageName, release, dockerFile) {
+    await (0, docker_cli_js_1.dockerCommand)("buildx install");
+    await (0, docker_cli_js_1.dockerCommand)('buildx create --name "$STAGE" --use');
+    await (0, docker_cli_js_1.dockerCommand)(`buildx build --platform linux/amd64 -t "${imageName}" --progress plain --build-arg RELEASE="${release}" -f "${dockerFile}" . --push`, { echo: true });
+    await (0, docker_cli_js_1.dockerCommand)("buildx prune --all --force");
+    await (0, docker_cli_js_1.dockerCommand)("buildx uninstall");
+}
+exports.imageBuildArm = imageBuildArm;
 async function imagePush(imageName) {
     await (0, docker_cli_js_1.dockerCommand)(`push ${imageName}`, { echo: true });
 }
@@ -56,6 +64,7 @@ exports.default = {
     logout,
     login,
     imageBuild,
+    imageBuildArm,
     imageExists,
     imagePush,
 };

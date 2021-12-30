@@ -37,6 +37,21 @@ export async function imageBuild(
   );
 }
 
+export async function imageBuildArm(
+  imageName: string,
+  release: string,
+  dockerFile: string
+) {
+  await dockerCommand("buildx install");
+  await dockerCommand('buildx create --name "$STAGE" --use');
+  await dockerCommand(
+    `buildx build --platform linux/amd64 -t "${imageName}" --progress plain --build-arg RELEASE="${release}" -f "${dockerFile}" . --push`,
+    { echo: true }
+  );
+  await dockerCommand("buildx prune --all --force");
+  await dockerCommand("buildx uninstall");
+}
+
 export async function imagePush(imageName: string) {
   await dockerCommand(`push ${imageName}`, { echo: true });
 }
@@ -65,6 +80,7 @@ export default {
   logout,
   login,
   imageBuild,
+  imageBuildArm,
   imageExists,
   imagePush,
 };

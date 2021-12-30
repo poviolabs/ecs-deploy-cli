@@ -120,21 +120,19 @@ exports.command = {
         (0, cli_helper_1.variable)("DOCKER_VERSION", await (0, docker_helper_1.version)());
         cli_helper_1.default.banner("Build Environment");
         const gitChanges = await (0, git_helper_1.getGitChanges)(argv.pwd);
-        if (gitChanges !== "") {
-            if (argv.ignoreGitChanges) {
-                cli_helper_1.default.warning("Changes detected in .git");
-            }
-            else {
-                if (gitChanges === undefined) {
-                    cli_helper_1.default.error("Error detecting Git");
-                }
-                else {
-                    cli_helper_1.default.banner("Detected Changes in Git - Stage must be clean to build!");
-                    console.log(gitChanges);
-                }
-                process.exit(1);
-            }
-        }
+        // if (gitChanges !== "") {
+        //   if (argv.ignoreGitChanges) {
+        //     cli.warning("Changes detected in .git");
+        //   } else {
+        //     if (gitChanges === undefined) {
+        //       cli.error("Error detecting Git");
+        //     } else {
+        //       cli.banner("Detected Changes in Git - Stage must be clean to build!");
+        //       console.log(gitChanges);
+        //     }
+        //     process.exit(1);
+        //   }
+        // }
         cli_helper_1.default.variable("RELEASE", argv.release);
         // load ECR details
         const imageName = `${argv.awsAccountId}.dkr.ecr.${argv.awsRegion}.amazonaws.com/${argv.ecrRepoName}:${argv.release}`;
@@ -154,14 +152,6 @@ exports.command = {
             cli_helper_1.default.variable("DOCKER_PATH", argv.dockerPath, "Dockerfile");
         }
         cli_helper_1.default.variable("DOCKER_VERSION", await docker_helper_2.default.version());
-        if (await docker_helper_2.default.imageExists(imageName)) {
-            cli_helper_1.default.info("Reusing docker image");
-        }
-        else {
-            cli_helper_1.default.info("Building docker image");
-            await docker_helper_2.default.imageBuild(imageName, argv.release, argv.dockerPath);
-        }
-        cli_helper_1.default.banner("Push step");
         cli_helper_1.default.info("Setting up AWS Docker Auth...");
         const ecrCredentials = await (0, aws_helper_1.ecrGetDockerCredentials)({
             region: argv.awsRegion,
@@ -169,13 +159,28 @@ exports.command = {
         try {
             await docker_helper_2.default.login(ecrCredentials.endpoint, "AWS", ecrCredentials.password);
             cli_helper_1.default.info("AWS ECR Docker Login succeeded");
-            if (!argv.ci) {
-                if (!(await cli_helper_1.default.confirm("Press enter to upload image to ECR..."))) {
-                    cli_helper_1.default.info("Canceled");
-                    return;
-                }
+            if (process.arch.includes("arm")) {
+                cli_helper_1.default.info("Building docker image for ARM arch and pushing to registry");
+                // With ARM architecture, image will get always build and immediately pushed to registry, since Docker still does not support multi arch images locally
+                await docker_helper_2.default.imageBuildArm(imageName, argv.release, argv.dockerPath);
             }
-            await docker_helper_2.default.imagePush(imageName);
+            else {
+                if (await docker_helper_2.default.imageExists(imageName)) {
+                    cli_helper_1.default.info("Reusing docker image");
+                }
+                else {
+                    cli_helper_1.default.info("Building docker image");
+                    await docker_helper_2.default.imageBuild(imageName, argv.release, argv.dockerPath);
+                }
+                cli_helper_1.default.banner("Push step");
+                if (!argv.ci) {
+                    if (!(await cli_helper_1.default.confirm("Press enter to upload image to ECR..."))) {
+                        cli_helper_1.default.info("Canceled");
+                        return;
+                    }
+                }
+                await docker_helper_2.default.imagePush(imageName);
+            }
             cli_helper_1.default.info(`Done! Deploy the service with yarn ecs-deploy-cli --stage ${argv.stage}`);
         }
         catch (e) {
