@@ -259,7 +259,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/credential-provider-env@npm:3.47.0":
+"@aws-sdk/credential-provider-env@npm:3.47.0, @aws-sdk/credential-provider-env@npm:^3.47.0":
   version: 3.47.0
   resolution: "@aws-sdk/credential-provider-env@npm:3.47.0"
   dependencies:
@@ -300,7 +300,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/credential-provider-node@npm:3.47.0, @aws-sdk/credential-provider-node@npm:^3.47.0":
+"@aws-sdk/credential-provider-node@npm:3.47.0":
   version: 3.47.0
   resolution: "@aws-sdk/credential-provider-node@npm:3.47.0"
   dependencies:
@@ -940,8 +940,8 @@ __metadata:
   dependencies:
     "@aws-sdk/client-ecr": ^3.47.0
     "@aws-sdk/client-ecs": ^3.47.0
+    "@aws-sdk/credential-provider-env": ^3.47.0
     "@aws-sdk/credential-provider-ini": ^3.47.0
-    "@aws-sdk/credential-provider-node": ^3.47.0
     "@aws-sdk/node-config-provider": ^3.47.0
     "@swc/core": ^1.2.123
     "@types/diff": ^5.0.2
