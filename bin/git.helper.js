@@ -26,10 +26,14 @@ async function getGitChanges(pwd) {
     }
 }
 exports.getGitChanges = getGitChanges;
-async function getRelease(pwd) {
+async function getRelease(pwd, strategy = "gitsha", addon) {
     try {
         const git = (0, simple_git_1.default)(pwd);
-        return await git.revparse("HEAD");
+        const gitSha = await git.revparse("HEAD");
+        if (strategy === "gitsha-stage" && addon) {
+            return `${gitSha}-${addon}`;
+        }
+        return gitSha;
     }
     catch (e) {
         console.log(e);

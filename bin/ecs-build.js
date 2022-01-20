@@ -105,12 +105,7 @@ exports.command = {
             .options((0, yargs_helper_1.getYargsOptions)(EcsBuildOptions))
             .middleware(async (_argv) => {
             const argv = new EcsBuildOptions(await _argv, true);
-            if (!argv.release) {
-                argv.release =
-                    argv.releaseStrategy === "gitsha-stage"
-                        ? `${await (0, git_helper_1.getRelease)(argv.pwd)}-${argv.stage}`
-                        : await (0, git_helper_1.getRelease)(argv.pwd);
-            }
+            argv.release = argv.release || await (0, git_helper_1.getRelease)(argv.pwd, argv.releaseStrategy);
             return argv;
         }, true);
     },
