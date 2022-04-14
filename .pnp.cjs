@@ -35,6 +35,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@aws-sdk/client-ecr", "npm:3.67.0"],\
             ["@aws-sdk/client-ecs", "npm:3.67.0"],\
+            ["@aws-sdk/client-sts", "npm:3.67.0"],\
             ["@aws-sdk/credential-provider-env", "npm:3.55.0"],\
             ["@aws-sdk/credential-provider-ini", "npm:3.67.0"],\
             ["@aws-sdk/node-config-provider", "npm:3.58.0"],\
@@ -2130,6 +2131,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@poviolabs/ecs-deploy-cli", "workspace:."],\
             ["@aws-sdk/client-ecr", "npm:3.67.0"],\
             ["@aws-sdk/client-ecs", "npm:3.67.0"],\
+            ["@aws-sdk/client-sts", "npm:3.67.0"],\
             ["@aws-sdk/credential-provider-env", "npm:3.55.0"],\
             ["@aws-sdk/credential-provider-ini", "npm:3.67.0"],\
             ["@aws-sdk/node-config-provider", "npm:3.58.0"],\
