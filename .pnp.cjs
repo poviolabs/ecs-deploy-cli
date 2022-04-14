@@ -56,13 +56,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@vercel/ncc", "npm:0.33.4"],\
             ["chalk", "npm:4.1.2"],\
             ["diff", "npm:5.0.0"],\
-            ["docker-cli-js", "npm:2.9.0"],\
             ["dotenv", "npm:16.0.0"],\
             ["eslint", "npm:8.13.0"],\
             ["eslint-config-prettier", "virtual:61d7d6aea3136d5f607af413bffbc385289f8d06c38ca8494b7f2003114f51487384519d3341ff80140cc7501883fa08db15bd1f662a671aa4d7f3e4c3f7c6fb#npm:8.5.0"],\
             ["eslint-plugin-import-helpers", "virtual:61d7d6aea3136d5f607af413bffbc385289f8d06c38ca8494b7f2003114f51487384519d3341ff80140cc7501883fa08db15bd1f662a671aa4d7f3e4c3f7c6fb#npm:1.2.1"],\
             ["eslint-plugin-prettier", "virtual:61d7d6aea3136d5f607af413bffbc385289f8d06c38ca8494b7f2003114f51487384519d3341ff80140cc7501883fa08db15bd1f662a671aa4d7f3e4c3f7c6fb#npm:4.0.0"],\
             ["jest", "virtual:61d7d6aea3136d5f607af413bffbc385289f8d06c38ca8494b7f2003114f51487384519d3341ff80140cc7501883fa08db15bd1f662a671aa4d7f3e4c3f7c6fb#npm:27.5.1"],\
+            ["lodash", "npm:4.17.21"],\
+            ["lodash.snakecase", "npm:4.1.1"],\
             ["prettier", "npm:2.6.2"],\
             ["prompt-sync", "npm:4.2.0"],\
             ["reflect-metadata", "npm:0.1.13"],\
@@ -2150,13 +2151,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@vercel/ncc", "npm:0.33.4"],\
             ["chalk", "npm:4.1.2"],\
             ["diff", "npm:5.0.0"],\
-            ["docker-cli-js", "npm:2.9.0"],\
             ["dotenv", "npm:16.0.0"],\
             ["eslint", "npm:8.13.0"],\
             ["eslint-config-prettier", "virtual:61d7d6aea3136d5f607af413bffbc385289f8d06c38ca8494b7f2003114f51487384519d3341ff80140cc7501883fa08db15bd1f662a671aa4d7f3e4c3f7c6fb#npm:8.5.0"],\
             ["eslint-plugin-import-helpers", "virtual:61d7d6aea3136d5f607af413bffbc385289f8d06c38ca8494b7f2003114f51487384519d3341ff80140cc7501883fa08db15bd1f662a671aa4d7f3e4c3f7c6fb#npm:1.2.1"],\
             ["eslint-plugin-prettier", "virtual:61d7d6aea3136d5f607af413bffbc385289f8d06c38ca8494b7f2003114f51487384519d3341ff80140cc7501883fa08db15bd1f662a671aa4d7f3e4c3f7c6fb#npm:4.0.0"],\
             ["jest", "virtual:61d7d6aea3136d5f607af413bffbc385289f8d06c38ca8494b7f2003114f51487384519d3341ff80140cc7501883fa08db15bd1f662a671aa4d7f3e4c3f7c6fb#npm:27.5.1"],\
+            ["lodash", "npm:4.17.21"],\
+            ["lodash.snakecase", "npm:4.1.1"],\
             ["prettier", "npm:2.6.2"],\
             ["prompt-sync", "npm:4.2.0"],\
             ["reflect-metadata", "npm:0.1.13"],\
@@ -2484,17 +2486,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["@types/blue-tape", [\
-        ["npm:0.1.33", {\
-          "packageLocation": "./.yarn/cache/@types-blue-tape-npm-0.1.33-ca1101d876-8df237f74f.zip/node_modules/@types/blue-tape/",\
-          "packageDependencies": [\
-            ["@types/blue-tape", "npm:0.1.33"],\
-            ["@types/node", "npm:16.11.12"],\
-            ["@types/tape", "npm:4.13.2"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
       ["@types/diff", [\
         ["npm:5.0.2", {\
           "packageLocation": "./.yarn/cache/@types-diff-npm-5.0.2-cc002907d4-8fbc419b5a.zip/node_modules/@types/diff/",\
@@ -2621,15 +2612,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["@types/lodash", [\
-        ["npm:4.14.119", {\
-          "packageLocation": "./.yarn/cache/@types-lodash-npm-4.14.119-20c82d4ac4-8f881fd8e3.zip/node_modules/@types/lodash/",\
-          "packageDependencies": [\
-            ["@types/lodash", "npm:4.14.119"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
       ["@types/node", [\
         ["npm:16.11.12", {\
           "packageLocation": "./.yarn/cache/@types-node-npm-16.11.12-0c51fb0c8d-a3feb346d6.zip/node_modules/@types/node/",\
@@ -2701,16 +2683,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-stack-utils-npm-2.0.1-867718ab70-205fdbe332.zip/node_modules/@types/stack-utils/",\
           "packageDependencies": [\
             ["@types/stack-utils", "npm:2.0.1"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@types/tape", [\
-        ["npm:4.13.2", {\
-          "packageLocation": "./.yarn/cache/@types-tape-npm-4.13.2-6b84a72ea3-055a896c10.zip/node_modules/@types/tape/",\
-          "packageDependencies": [\
-            ["@types/tape", "npm:4.13.2"],\
-            ["@types/node", "npm:16.11.12"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -3586,18 +3558,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["cli-table-2-json", [\
-        ["npm:1.0.13", {\
-          "packageLocation": "./.yarn/cache/cli-table-2-json-npm-1.0.13-d9743600a8-7bfd288d80.zip/node_modules/cli-table-2-json/",\
-          "packageDependencies": [\
-            ["cli-table-2-json", "npm:1.0.13"],\
-            ["@types/blue-tape", "npm:0.1.33"],\
-            ["@types/lodash", "npm:4.14.119"],\
-            ["lodash", "npm:4.17.21"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
       ["cliui", [\
         ["npm:7.0.4", {\
           "packageLocation": "./.yarn/cache/cliui-npm-7.0.4-d6b8a9edb6-ce2e8f578a.zip/node_modules/cliui/",\
@@ -3915,30 +3875,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["dir-glob", "npm:3.0.1"],\
             ["path-type", "npm:4.0.0"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["docker-cli-js", [\
-        ["npm:2.9.0", {\
-          "packageLocation": "./.yarn/cache/docker-cli-js-npm-2.9.0-fa75929f33-8ec1403a85.zip/node_modules/docker-cli-js/",\
-          "packageDependencies": [\
-            ["docker-cli-js", "npm:2.9.0"],\
-            ["cli-table-2-json", "npm:1.0.13"],\
-            ["dockermachine-cli-js", "npm:3.0.5"],\
-            ["lodash.snakecase", "npm:4.1.1"],\
-            ["nodeify-ts", "npm:1.0.6"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["dockermachine-cli-js", [\
-        ["npm:3.0.5", {\
-          "packageLocation": "./.yarn/cache/dockermachine-cli-js-npm-3.0.5-5575467b8a-0fa40f1211.zip/node_modules/dockermachine-cli-js/",\
-          "packageDependencies": [\
-            ["dockermachine-cli-js", "npm:3.0.5"],\
-            ["cli-table-2-json", "npm:1.0.13"],\
-            ["nodeify-ts", "npm:1.0.6"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -6239,15 +6175,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/node-releases-npm-2.0.2-a4dc82058a-da858bf86b.zip/node_modules/node-releases/",\
           "packageDependencies": [\
             ["node-releases", "npm:2.0.2"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["nodeify-ts", [\
-        ["npm:1.0.6", {\
-          "packageLocation": "./.yarn/cache/nodeify-ts-npm-1.0.6-b5349abb5f-ee145d3dff.zip/node_modules/nodeify-ts/",\
-          "packageDependencies": [\
-            ["nodeify-ts", "npm:1.0.6"]\
           ],\
           "linkType": "HARD"\
         }]\
