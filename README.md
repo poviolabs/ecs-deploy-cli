@@ -7,16 +7,11 @@ Features:
 - Environment and SSM credentias storage conventions
 - CircleCi pipeline example
 - Cross-platform (made with TypeScript/Javascript, external requirements: `git`, `docker`)
-- Uses the config structure `.env.${STAGE}`
+- Uses the config.yaml structure
 
 Examples:
 
 - [NestJs](./examples/nestjs) Docker and Pipeline
-
-# WIP
-
-- [ ] build/deploy for next.js
-- [ ] mac m1 support for docker build
 
 # Usage
 
@@ -27,26 +22,43 @@ yarn add ecs-deploy-cli@poviolabs/ecs-deploy-cli
 yarn up ecs-deploy-cli@poviolabs/ecs-deploy-cli
 ```
 
-
 ## Configure
 
-### .env.${STAGE}
-```dotenv
-AWS_ACCOUNT_ID=
-AWS_REGION=eu-central-1
-AWS_REPO_NAME=my-app
-ECS_TASK_FAMILY=my-app-backend
-ECS_CLUSTER_NAME=my-app
-ECS_SERVICE_NAME=my-app-backend
-```
+### config.yaml
+```yaml
 
-### .env.${STAGE}.secrets
+stages:
+  myapp-dev:
 
-For local running (do not commit to git, use ENV within CI)
+    ecs_deploy:
 
-```dotenv
-AWS_ACCESS_KEY_ID=
-AWS_SECRET_ACCESS_KEY=
+      AWS_REPO_NAME: myapp
+      ECS_TASK_FAMILY: myapp-dev-backend
+      ECS_SERVICE_NAME: myapp-dev-backend
+      ECS_CLUSTER_NAME: myapp-dev
+
+      ## relative to PWD
+      # DOCKER_PATH: ./Dockerfile
+
+    ecs_env:
+      ## variables can be injected directly into ECS
+      ##  but one should stick with this file by default
+      ##  to avoid the ECS task environment size limit
+      # TYPEORM_DATABASE: myapp
+
+    ecs_secrets:
+      TYPEORM_PASSWORD: 'arn:aws:secretsmanager:eu-central-1:000000000000:....'
+      app__auth__secret: 'arn:aws:ssm:eu-central-1:000000000000:/myapp-dev/secret'
+    
+    ## Inject variable into docker build
+    ##  This can be used for next.js along with `--releaseStrategy gitsha-stage`
+    # ecs_docker_env:
+    #  app_module_key: "value"
+
+    ## optionally, have a dot-env locally
+    ##  remember to gitignore!
+    # env_files: [ '.env.myapp-dev.secrets' ]
+    ## or use config.local.yaml
 ```
 
 ## Run
@@ -59,6 +71,9 @@ yarn ecs-deploy-cli build --stage my-stage
 
 # Deploy the image built from the current git commit to ECS
 yarn ecs-deploy-cli deploy --stage my-stage
+
+# display a message into a slack channel with the current commit / release
+yarn ecs-deploy-cli slack --messageType success
 ```
 
 ## Run Options
@@ -86,9 +101,63 @@ Speed up builds if you know the ECR image does not exist. (build only)
 
 If the ECS task got corrupted, you can use this flag to deploy a new one based on a sane version. Defaults to the latest one. (deploy only)
 
+#### --skipPush
+
+Only build the image. Useful for testing.
+
+#### --platform
+
+Set the platform explicitly, defaults to "linux/amd64"
+
+#### --buildx
+
+Use [docker buildx](https://docs.docker.com/buildx/working-with-buildx/) to build on ARM / Apple M1.
+
+#### --service
+
+If the stage has multiple services, you can define the one you want to deploy here.
+
+Example configuration
+
+```yaml
+stages:
+  myapp-prd: &myapp-prd
+    yaml_local_override: correct
+
+  myapp-prd-worker:
+    <<: *myapp-prd
+    stage: myapp-prd
+```
+
+#### Overriding config and global prefix
+
+CONFIG_PREFIX=app
+CONFIG_FILE=config.yaml
+
+#### Slack message config
+
+```yaml
+stages:
+  myapp-prd:
+    ecs_deploy:
+      slackChannel: C03AXDS9F2B
+      slackAutolinkPrefix: SP-
+      slackAutolinkTarget: https://github.com/poviolabs/ecs-deploy-cli/issues/
+      slackCommitPrefix: https://github.com/poviolabs/ecs-deploy-cli/commit/
+      slackProjectName: ECS-Deploy
+```
+
+```bash
+yarn ecs-deploy-cli slack --messageType success
+yarn ecs-deploy-cli slack --messageType failure
+yarn ecs-deploy-cli slack --messageType info --message A custom message!
+```
+
 ## Development
 
-The tool can be run locally when a deploy target is set up within .env.test.secrets
+### Test locally
+
+Set up `./test/secrets.env` with credentials to do a E2E test.
 
 ```bash
 # test with ts-node
@@ -100,3 +169,10 @@ yarn build
 # test build
 yarn test --help
 ```
+
+### Analyze package
+
+```bash
+npx webpack-bundle-analyzer ./dist/stats.json
+```
+

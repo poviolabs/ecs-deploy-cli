@@ -4,11 +4,16 @@
 
 import yargs from "yargs";
 
-import { getYargsOptions, Option, Options } from "./yargs.helper";
-import cli, { chk } from "./cli.helper";
-import { ecsWatch } from "./aws.helper";
+import {
+  getYargsOptions,
+  loadYargsConfig,
+  Option,
+  YargsOptions,
+} from "~yargs.helper";
+import cli, { chk } from "~cli.helper";
+import { ecsWatch } from "~aws.helper";
 
-class EcsWatchOptions extends Options {
+class EcsWatchOptions extends YargsOptions {
   @Option({ envAlias: "PWD", demandOption: true })
   pwd: string;
 
@@ -38,7 +43,7 @@ export const command: yargs.CommandModule = {
     return y
       .options(getYargsOptions(EcsWatchOptions))
       .middleware(async (_argv) => {
-        return new EcsWatchOptions(await _argv, true);
+        return loadYargsConfig(EcsWatchOptions, _argv as any) as any;
       }, true);
   },
   handler: async (_argv) => {

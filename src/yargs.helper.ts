@@ -1,12 +1,17 @@
 import "reflect-metadata";
-import { getEnv } from "./env.helper";
-import { Options as YargsOptions } from "yargs";
+import { Options } from "yargs";
+import path from "path";
 
-interface IOptionProperties extends YargsOptions {
+import { loadConfig, Config } from "~config.helper";
+import cli from "~cli.helper";
+
+interface IOptionProperties extends Options {
   envAlias?: string;
 }
 
 const optionsKey = Symbol("options_key");
+
+export { Config } from "~config.helper";
 
 export function Option(properties: IOptionProperties) {
   return (target: object, propertyKey: string) => {
@@ -41,7 +46,7 @@ export function getOptions<T>(target: any): Record<keyof T, IOptionProperties> {
   return options;
 }
 
-export function getYargsOptions<T>(target: any): Record<keyof T, YargsOptions> {
+export function getYargsOptions<T>(target: any): Record<keyof T, Options> {
   return Object.entries(getOptions(target)).reduce((a, [property, options]) => {
     a[property] = Object.fromEntries(
       Object.entries(options).filter(
@@ -50,44 +55,68 @@ export function getYargsOptions<T>(target: any): Record<keyof T, YargsOptions> {
       )
     );
     return a;
-  }, {} as Record<keyof T, YargsOptions>);
+  }, {} as Record<keyof T, Options>);
 }
 
-export class Options {
+export class YargsOptions {
   stage: string;
+  service?: string;
   pwd: string;
+  config: Config;
+}
 
-  constructor(values: any, overrideEnv: boolean) {
-    this.stage = values.stage || process.env.STAGE;
-    this.pwd = values.pwd || process.cwd();
+export function loadYargsConfig<T extends YargsOptions>(
+  cls: new () => T,
+  _argv: Record<string, unknown>
+): T {
+  const argv: T = new cls();
 
-    const environment = getEnv(this.pwd, this.stage, overrideEnv);
+  argv.pwd = path.resolve(
+    (_argv.pwd as string) || process.env.PWD || process.cwd()
+  );
+  if (!argv.pwd) throw new Error("No PWD given");
+  argv.stage =
+    (_argv.stage as string) ||
+    process.env[`${process.env.CONFIG_PREFIX}__version`] ||
+    process.env.STAGE;
+  if (!argv.stage) throw new Error("No Stage defined");
 
-    // override from ENV
-    for (const [name, o] of Object.entries(getOptions(this.constructor))) {
-      if (["pwd", "stage"].includes(name)) {
-        continue;
-      }
-      this[name] = values[name];
+  let config;
+  if (_argv.service) {
+    argv.service = _argv.service as string;
+    config = loadConfig(argv.pwd, argv.stage, { service: argv.service });
+  } else {
+    config = loadConfig(argv.pwd, argv.stage);
+  }
+
+  for (const [name, o] of Object.entries(getOptions(cls))) {
+    if (["pwd", "stage", "config"].includes(name)) {
+      continue;
+    }
+    argv[name] =
+      // yargs is always right
+      _argv[name] ||
+      // default to config if set
+      config.ecs_deploy[name] ||
       // fallback to env
-      if (o.envAlias) {
-        if (this[name] === undefined) {
-          // get option from ENV
-          if (environment[o.envAlias] !== undefined) {
-            this[name] = environment[o.envAlias];
-          }
-        } else {
-          // write option from yargs back into ENV
-          if (overrideEnv) {
-            process.env[o.envAlias] = this[name];
-          }
-        }
+      process.env[o.envAlias];
+
+    // write alias back into process.env
+    if (o.envAlias && process.env[o.envAlias] !== argv[name]) {
+      if (process.env[o.envAlias] !== undefined) {
+        cli.warning(`Overwriting ${o.envAlias}!`);
       }
-      // fallback to default
-      if (this[name] === undefined && o.default) {
-        // use default from yargs
-        this[name] = o.default;
-      }
+      process.env[o.envAlias] = argv[name];
+    }
+
+    // fallback to default
+    if (argv[name] === undefined && o.default) {
+      // use default from yargs
+      argv[name] = o.default;
     }
   }
+
+  argv.config = config;
+
+  return argv;
 }

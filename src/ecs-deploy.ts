@@ -3,26 +3,34 @@
  */
 
 import yargs from "yargs";
-import semver from "semver";
+import { clean as semverClean, inc as semverInc } from "semver";
+import { RegisterTaskDefinitionCommandInput } from "@aws-sdk/client-ecs";
 
-import { getRelease } from "./git.helper";
-import { getYargsOptions, Option, Options } from "./yargs.helper";
-import cli, { chk } from "./cli.helper";
+import { getRelease } from "~git.helper";
+import cli, { chk } from "~cli.helper";
+import {
+  Option,
+  getYargsOptions,
+  loadYargsConfig,
+  YargsOptions,
+} from "~yargs.helper";
 import {
   ecrImageExists,
   ecsGetCurrentTaskDefinition,
   ecsRegisterTaskDefinition,
   ecsUpdateService,
   ecsWatch,
-} from "./aws.helper";
-import { RegisterTaskDefinitionCommandInput } from "@aws-sdk/client-ecs";
+} from "~aws.helper";
 
-class EcsDeployOptions extends Options {
+class EcsDeployOptions extends YargsOptions {
   @Option({ envAlias: "PWD", demandOption: true })
   pwd: string;
 
   @Option({ envAlias: "STAGE", demandOption: true })
   stage: string;
+
+  @Option({ envAlias: "SERVICE" })
+  service: string;
 
   @Option({ envAlias: "RELEASE", demandOption: true })
   release: string;
@@ -62,8 +70,8 @@ class EcsDeployOptions extends Options {
   @Option({ envAlias: "VERBOSE", default: false })
   verbose: boolean;
 
-  @Option({ envAlias: "VERSION", type: "string" })
-  ecsVersion: string;
+  @Option({ envAlias: "VERSION", type: "string", alias: "ecsVersion" })
+  appVersion: string;
 
   @Option({
     type: "string",
@@ -79,10 +87,11 @@ export const command: yargs.CommandModule = {
     return y
       .options(getYargsOptions(EcsDeployOptions))
       .middleware(async (_argv) => {
-        const argv = new EcsDeployOptions(await _argv, true);
+        const argv = loadYargsConfig(EcsDeployOptions, _argv as any);
         argv.release =
           argv.release || (await getRelease(argv.pwd, argv.releaseStrategy));
-        return argv;
+
+        return argv as any;
       }, true);
   },
   handler: async (_argv) => {
@@ -137,56 +146,82 @@ export const command: yargs.CommandModule = {
     const previousContainerDefinition =
       previousTaskDefinition.containerDefinitions[0];
 
-    let version = argv.ecsVersion;
+    const globalPrefix = process.env.CONFIG_PREFIX || "app";
+
+    //  get previous environment
+    const taskDefinitionContainerEnvironment =
+      previousContainerDefinition.environment.reduce((acc, cur) => {
+        acc[cur.name] = cur.value;
+        return acc;
+      }, {} as Record<string, string>);
+
+    let version = argv.appVersion;
     if (!version) {
-      const previousVersion = previousContainerDefinition.environment?.find(
-        (x) => x.name === "VERSION"
-      )?.value;
+      const previousVersion =
+        taskDefinitionContainerEnvironment[`${globalPrefix}__version`];
       if (previousVersion) {
-        const cleanedVersion = semver.clean(
+        const cleanedVersion = semverClean(
           previousVersion.replace(/^([^0-9]+)/, "")
         );
         if (!cleanedVersion) {
           cli.warning("Version could not be parsed");
         } else {
-          // Make the version ${stage}-0.0.1
-          version = `${argv.stage}-${semver.inc(cleanedVersion, "patch")}`;
+          // make the version ${stage}-0.0.1
+          version = `${argv.stage}-${semverInc(cleanedVersion, "patch")}`;
           cli.info("Incrementing version");
         }
       } else {
         cli.notice("No version provided");
       }
     } else {
-      cli.variable("VERSION", version);
+      cli.variable(`${globalPrefix}__version`, version);
     }
 
-    //  Get previous environment
-    const environmentDict = previousContainerDefinition.environment.reduce(
-      (acc, cur) => {
-        acc[cur.name] = cur.value;
-        return acc;
-      },
-      {} as Record<string, string>
-    );
+    // override task container env from config.yaml
+    if (argv.config.ecs_env && typeof argv.config.ecs_env === "object") {
+      for (const [envKey, envValue] of Object.entries(
+        argv.config.ecs_env as Record<string, string>
+      )) {
+        taskDefinitionContainerEnvironment[envKey] = envValue;
+      }
+    }
 
+    // override version
     if (version) {
-      environmentDict.VERSION = version;
+      taskDefinitionContainerEnvironment[`${globalPrefix}__version`] = version;
     }
 
-    // Get previous secret pointers
-    const secretsDict = previousContainerDefinition.secrets.reduce(
-      (acc, cur) => {
+    // check/set stage
+    if (!taskDefinitionContainerEnvironment[`${globalPrefix}__stage`]) {
+      taskDefinitionContainerEnvironment[`${globalPrefix}__stage`] = argv.stage;
+    } else if (
+      taskDefinitionContainerEnvironment[`${globalPrefix}__stage`] !==
+      argv.stage
+    ) {
+      throw new Error(
+        `Stage mismatch - tried to deploy to ${
+          taskDefinitionContainerEnvironment[`${globalPrefix}__stage`]
+        }`
+      );
+    }
+
+    // get previous secret pointers
+    const taskDefinitionContainerSecrets: Record<string, string> =
+      previousContainerDefinition.secrets.reduce((acc, cur) => {
         acc[cur.name] = cur.valueFrom;
         return acc;
-      },
-      {} as Record<string, string>
-    );
+      }, {} as Record<string, string>);
 
-    // inject secret SSM/SM from ENV
-    for (const [k, v] of Object.entries(process.env).filter(([k, v]) => {
-      return k.endsWith("__FROM");
-    })) {
-      secretsDict[k.replace(/__FROM$/, "")] = v;
+    // override task container secrets from config.yaml
+    if (
+      argv.config.ecs_secrets &&
+      typeof argv.config.ecs_secrets === "object"
+    ) {
+      for (const [secretKey, secretFrom] of Object.entries(
+        argv.config.ecs_secrets as Record<string, string>
+      )) {
+        taskDefinitionContainerSecrets[secretKey] = secretFrom;
+      }
     }
 
     const taskDefinitionRequest: RegisterTaskDefinitionCommandInput = {
@@ -194,14 +229,18 @@ export const command: yargs.CommandModule = {
         {
           ...previousContainerDefinition,
           image: imageName,
-          environment: Object.entries(environmentDict).map(([k, v]) => ({
-            name: k,
-            value: v,
-          })),
-          secrets: Object.entries(secretsDict).map(([k, v]) => ({
-            name: k,
-            valueFrom: v,
-          })),
+          environment: Object.entries(taskDefinitionContainerEnvironment).map(
+            ([k, v]) => ({
+              name: k,
+              value: v,
+            })
+          ),
+          secrets: Object.entries(taskDefinitionContainerSecrets).map(
+            ([k, v]) => ({
+              name: k,
+              valueFrom: v,
+            })
+          ),
         },
       ],
       family: previousTaskDefinition.family,
