@@ -63,8 +63,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-import-helpers", "virtual:61d7d6aea3136d5f607af413bffbc385289f8d06c38ca8494b7f2003114f51487384519d3341ff80140cc7501883fa08db15bd1f662a671aa4d7f3e4c3f7c6fb#npm:1.2.1"],\
             ["eslint-plugin-prettier", "virtual:61d7d6aea3136d5f607af413bffbc385289f8d06c38ca8494b7f2003114f51487384519d3341ff80140cc7501883fa08db15bd1f662a671aa4d7f3e4c3f7c6fb#npm:4.0.0"],\
             ["jest", "virtual:61d7d6aea3136d5f607af413bffbc385289f8d06c38ca8494b7f2003114f51487384519d3341ff80140cc7501883fa08db15bd1f662a671aa4d7f3e4c3f7c6fb#npm:27.5.1"],\
-            ["lodash", "npm:4.17.21"],\
-            ["lodash.snakecase", "npm:4.1.1"],\
             ["prettier", "npm:2.6.2"],\
             ["prompt-sync", "npm:4.2.0"],\
             ["reflect-metadata", "npm:0.1.13"],\
@@ -2159,8 +2157,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-import-helpers", "virtual:61d7d6aea3136d5f607af413bffbc385289f8d06c38ca8494b7f2003114f51487384519d3341ff80140cc7501883fa08db15bd1f662a671aa4d7f3e4c3f7c6fb#npm:1.2.1"],\
             ["eslint-plugin-prettier", "virtual:61d7d6aea3136d5f607af413bffbc385289f8d06c38ca8494b7f2003114f51487384519d3341ff80140cc7501883fa08db15bd1f662a671aa4d7f3e4c3f7c6fb#npm:4.0.0"],\
             ["jest", "virtual:61d7d6aea3136d5f607af413bffbc385289f8d06c38ca8494b7f2003114f51487384519d3341ff80140cc7501883fa08db15bd1f662a671aa4d7f3e4c3f7c6fb#npm:27.5.1"],\
-            ["lodash", "npm:4.17.21"],\
-            ["lodash.snakecase", "npm:4.1.1"],\
             ["prettier", "npm:2.6.2"],\
             ["prompt-sync", "npm:4.2.0"],\
             ["reflect-metadata", "npm:0.1.13"],\
@@ -5867,15 +5863,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/lodash.merge-npm-4.6.2-77cb4416bf-ad580b4bdb.zip/node_modules/lodash.merge/",\
           "packageDependencies": [\
             ["lodash.merge", "npm:4.6.2"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["lodash.snakecase", [\
-        ["npm:4.1.1", {\
-          "packageLocation": "./.yarn/cache/lodash.snakecase-npm-4.1.1-b12cdbecb4-1685ed3e83.zip/node_modules/lodash.snakecase/",\
-          "packageDependencies": [\
-            ["lodash.snakecase", "npm:4.1.1"]\
           ],\
           "linkType": "HARD"\
         }]\
