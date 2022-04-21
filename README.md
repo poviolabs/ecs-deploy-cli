@@ -25,17 +25,15 @@ yarn up ecs-deploy-cli@poviolabs/ecs-deploy-cli
 ## Configure
 
 ### config.yaml
-```yaml
 
+```yaml
 stages:
   myapp-dev:
-
     ecs_deploy:
-
-      AWS_REPO_NAME: myapp
-      ECS_TASK_FAMILY: myapp-dev-backend
-      ECS_SERVICE_NAME: myapp-dev-backend
-      ECS_CLUSTER_NAME: myapp-dev
+      awsRepoName: myapp
+      ecsTaskFamily: myapp-dev-backend
+      ecsServiceName: myapp-dev-backend
+      ecsClusterName: myapp-dev
 
       ## relative to PWD
       # DOCKER_PATH: ./Dockerfile
@@ -47,9 +45,9 @@ stages:
       # TYPEORM_DATABASE: myapp
 
     ecs_secrets:
-      TYPEORM_PASSWORD: 'arn:aws:secretsmanager:eu-central-1:000000000000:....'
-      app__auth__secret: 'arn:aws:ssm:eu-central-1:000000000000:/myapp-dev/secret'
-    
+      TYPEORM_PASSWORD: "arn:aws:secretsmanager:eu-central-1:000000000000:...."
+      app__auth__secret: "arn:aws:ssm:eu-central-1:000000000000:/myapp-dev/secret"
+
     ## Inject variable into docker build
     ##  This can be used for next.js along with `--releaseStrategy gitsha-stage`
     # ecs_docker_env:
@@ -66,7 +64,7 @@ stages:
 ```bash
 yarn ecs-deploy-cli --help
 
-# Build a new image from the current git commit and push to ECR 
+# Build a new image from the current git commit and push to ECR
 yarn ecs-deploy-cli build --stage my-stage
 
 # Deploy the image built from the current git commit to ECS
@@ -80,10 +78,10 @@ yarn ecs-deploy-cli slack --messageType success
 
 Descriptions for useful flags. Use `--help` for a comprehensive list.
 
-#### --releaseStrategy 
+#### --releaseStrategy
 
- - `gitsha` - make the same build for all stages
- - `gitsha-stage` - make a build based on the stage and git sha in cases where the build is different per stage
+- `gitsha` - make the same build for all stages
+- `gitsha-stage` - make a build based on the stage and git sha in cases where the build is different per stage
 
 #### --ecrCache
 
@@ -175,4 +173,3 @@ yarn test --help
 ```bash
 npx webpack-bundle-analyzer ./dist/stats.json
 ```
-
