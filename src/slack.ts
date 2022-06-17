@@ -99,7 +99,7 @@ export const command: yargs.CommandModule = {
 
     const templates = {
       success: {
-        icon: ":greencircle:",
+        icon: ":large_green_circle:",
       },
       info: {
         icon: ":information_source:",
