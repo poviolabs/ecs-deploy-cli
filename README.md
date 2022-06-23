@@ -16,10 +16,10 @@ Examples:
 # Usage
 
 ```bash
-yarn add ecs-deploy-cli@poviolabs/ecs-deploy-cli
+yarn add ecs-deploy-cli@poviolabs/ecs-deploy-cli#v1
 
 # upgrade
-yarn up ecs-deploy-cli@poviolabs/ecs-deploy-cli
+yarn up ecs-deploy-cli@poviolabs/ecs-deploy-cli#v1
 ```
 
 ## Configure
