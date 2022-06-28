@@ -1950,7 +1950,7 @@ __metadata:
     eslint-plugin-import-helpers: ^1.2.1
     eslint-plugin-prettier: ^4.0.0
     jest: ^28.1.1
-    node-stage: "poviolabs/node-stage#v1"
+    node-stage: "github:poviolabs/node-stage.git#174bfa9570a37005cbd687b6d4111cec18eee20a"
     prettier: ^2.7.1
     semver: ^7.3.7
     source-map-support: ^0.5.21
@@ -5144,9 +5144,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-stage@poviolabs/node-stage#v1":
+"node-stage@github:poviolabs/node-stage.git#174bfa9570a37005cbd687b6d4111cec18eee20a":
   version: 1.1.0
-  resolution: "node-stage@https://github.com/poviolabs/node-stage.git#commit=37d09c1ad48b734fc3af928d2ecb698e9d9508cc"
+  resolution: "node-stage@https://github.com/poviolabs/node-stage.git#commit=174bfa9570a37005cbd687b6d4111cec18eee20a"
   dependencies:
     chalk: ^4.1.2
     dotenv: ^16.0.1
@@ -5158,7 +5158,7 @@ __metadata:
     yargs: ^17.5.1
   bin:
     node-stage: ./dist/sh.js
-  checksum: aeb0fc05e732dc479668c57360c15fd8095cfd04ea947cfb1cf7959fd5a88898cb599bdd3233ea6e7c3560c667670a80bff4d99210995a646ea493ba0059f36a
+  checksum: caa8caf2df76f5931a55f60bc9ed8ce6d20b67a04dcd7bf9face4e4f4c11f4884571563b35a200a69807079e9ff825d04c14890f8b23e87c3f427daea2cebc31
   languageName: node
   linkType: hard
 
