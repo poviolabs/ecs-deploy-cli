@@ -17,7 +17,7 @@ export declare function ecrGetDockerCredentials(options: {
 }): Promise<{
     password: string;
     username: string;
-    endpoint: string | undefined;
+    endpoint: string;
 }>;
 export declare function ecsGetCurrentTaskDefinition(options: {
     taskDefinition: string;
