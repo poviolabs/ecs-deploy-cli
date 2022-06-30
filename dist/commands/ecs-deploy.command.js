@@ -202,7 +202,7 @@ exports.command = {
             }, {})
             : {};
         // override task container secrets from config.yaml
-        if (argv.config.ecsSecrets && typeof argv.config.ecSecrets === "object") {
+        if (argv.config.ecsSecrets && typeof argv.config.ecsSecrets === "object") {
             for (const [secretKey, secretFrom] of Object.entries(argv.config.ecsSecrets)) {
                 taskDefinitionContainerSecrets[secretKey] = secretFrom;
             }
