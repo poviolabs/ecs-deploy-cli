@@ -15,29 +15,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.command = void 0;
 const semver_1 = require("semver");
 const node_stage_1 = require("node-stage");
+const yargs_1 = require("node-stage/yargs");
+const cli_1 = require("node-stage/cli");
+const chalk_1 = require("node-stage/chalk");
 const aws_helper_1 = require("../helpers/aws.helper");
 const diff_helper_1 = require("../helpers/diff.helper");
 const version_helper_1 = require("../helpers/version.helper");
 class EcsDeployOptions {
 }
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "PWD", demandOption: true }),
+    (0, yargs_1.Option)({ envAlias: "PWD", demandOption: true }),
     __metadata("design:type", String)
 ], EcsDeployOptions.prototype, "pwd", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "STAGE", demandOption: true }),
+    (0, yargs_1.Option)({ envAlias: "STAGE", demandOption: true }),
     __metadata("design:type", String)
 ], EcsDeployOptions.prototype, "stage", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "SERVICE" }),
+    (0, yargs_1.Option)({ envAlias: "SERVICE" }),
     __metadata("design:type", String)
 ], EcsDeployOptions.prototype, "service", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "RELEASE", demandOption: true }),
+    (0, yargs_1.Option)({ envAlias: "RELEASE", demandOption: true }),
     __metadata("design:type", String)
 ], EcsDeployOptions.prototype, "release", void 0);
 __decorate([
-    (0, node_stage_1.Option)({
+    (0, yargs_1.Option)({
         envAlias: "RELEASE_STRATEGY",
         default: "gitsha",
         choices: ["gitsha", "gitsha-stage"],
@@ -46,47 +49,47 @@ __decorate([
     __metadata("design:type", String)
 ], EcsDeployOptions.prototype, "releaseStrategy", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "AWS_REPO_NAME", demandOption: true }),
+    (0, yargs_1.Option)({ envAlias: "AWS_REPO_NAME", demandOption: true }),
     __metadata("design:type", String)
 ], EcsDeployOptions.prototype, "ecrRepoName", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "ECS_TASK_FAMILY", demandOption: true }),
+    (0, yargs_1.Option)({ envAlias: "ECS_TASK_FAMILY", demandOption: true }),
     __metadata("design:type", String)
 ], EcsDeployOptions.prototype, "ecsTaskFamily", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "ECS_CLUSTER_NAME", demandOption: true }),
+    (0, yargs_1.Option)({ envAlias: "ECS_CLUSTER_NAME", demandOption: true }),
     __metadata("design:type", String)
 ], EcsDeployOptions.prototype, "ecsClusterName", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "ECS_SERVICE_NAME", demandOption: true }),
+    (0, yargs_1.Option)({ envAlias: "ECS_SERVICE_NAME", demandOption: true }),
     __metadata("design:type", String)
 ], EcsDeployOptions.prototype, "ecsServiceName", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "AWS_REGION", demandOption: true }),
+    (0, yargs_1.Option)({ envAlias: "AWS_REGION", demandOption: true }),
     __metadata("design:type", String)
 ], EcsDeployOptions.prototype, "awsRegion", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "AWS_ACCOUNT_ID", demandOption: true }),
+    (0, yargs_1.Option)({ envAlias: "AWS_ACCOUNT_ID", demandOption: true }),
     __metadata("design:type", String)
 ], EcsDeployOptions.prototype, "awsAccountId", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "CI" }),
+    (0, yargs_1.Option)({ envAlias: "CI" }),
     __metadata("design:type", Boolean)
 ], EcsDeployOptions.prototype, "ci", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "SKIP_ECR_EXISTS_CHECK" }),
+    (0, yargs_1.Option)({ envAlias: "SKIP_ECR_EXISTS_CHECK" }),
     __metadata("design:type", Boolean)
 ], EcsDeployOptions.prototype, "skipEcrExistsCheck", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "VERBOSE", default: false }),
+    (0, yargs_1.Option)({ envAlias: "VERBOSE", default: false }),
     __metadata("design:type", Boolean)
 ], EcsDeployOptions.prototype, "verbose", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "VERSION", type: "string", alias: "ecsVersion" }),
+    (0, yargs_1.Option)({ envAlias: "VERSION", type: "string", alias: "ecsVersion" }),
     __metadata("design:type", String)
 ], EcsDeployOptions.prototype, "appVersion", void 0);
 __decorate([
-    (0, node_stage_1.Option)({
+    (0, yargs_1.Option)({
         type: "string",
         describe: "The version to base the next revision on",
     }),
@@ -97,25 +100,26 @@ exports.command = {
     describe: "Deploy the ECR Image to ECS",
     builder: async (y) => {
         return y
-            .options((0, node_stage_1.getYargsOptions)(EcsDeployOptions))
+            .options((0, yargs_1.getYargsOptions)(EcsDeployOptions))
             .middleware(async (_argv) => {
-            return (await (0, node_stage_1.loadYargsConfig)(EcsDeployOptions, _argv, "ecsDeploy"));
+            return (await (0, yargs_1.loadYargsConfig)(EcsDeployOptions, _argv, "ecsDeploy"));
         }, true);
     },
     handler: async (_argv) => {
         const argv = (await _argv);
-        (0, node_stage_1.logBanner)(`EcsBuild ${(0, version_helper_1.getVersion)()}`);
-        for (const [k, v] of Object.entries(await (0, node_stage_1.getToolEnvironment)(argv))) {
-            (0, node_stage_1.logVariable)(k, v);
+        await (0, chalk_1.loadColors)();
+        (0, cli_1.logBanner)(`EcsBuild ${(0, version_helper_1.getVersion)()}`);
+        for (const [k, v] of Object.entries(await (0, cli_1.getToolEnvironment)(argv))) {
+            (0, cli_1.logVariable)(k, v);
         }
-        (0, node_stage_1.logBanner)("Deploy Environment");
-        (0, node_stage_1.logVariable)("ecrRepoName", argv.ecrRepoName);
-        (0, node_stage_1.logVariable)("ecsTaskFamily", argv.ecsTaskFamily);
-        (0, node_stage_1.logVariable)("ecsClusterName", argv.ecsClusterName);
-        (0, node_stage_1.logVariable)("ecsServiceName", argv.ecsServiceName);
+        (0, cli_1.logBanner)("Deploy Environment");
+        (0, cli_1.logVariable)("ecrRepoName", argv.ecrRepoName);
+        (0, cli_1.logVariable)("ecsTaskFamily", argv.ecsTaskFamily);
+        (0, cli_1.logVariable)("ecsClusterName", argv.ecsClusterName);
+        (0, cli_1.logVariable)("ecsServiceName", argv.ecsServiceName);
         // load ECR details
         const imageName = `${argv.awsAccountId}.dkr.ecr.${argv.awsRegion}.amazonaws.com/${argv.ecrRepoName}:${argv.release}`;
-        (0, node_stage_1.logInfo)(`Image name: ${imageName}`);
+        (0, cli_1.logInfo)(`Image name: ${imageName}`);
         if (!argv.skipEcrExistsCheck) {
             if (!(await (0, aws_helper_1.ecrImageExists)({
                 region: argv.awsRegion,
@@ -125,9 +129,9 @@ exports.command = {
                 throw new Error("ECR image does not exist");
             }
         }
-        (0, node_stage_1.logInfo)("Getting latest task definition..");
+        (0, cli_1.logInfo)("Getting latest task definition..");
         if (argv.ecsBaseTaskVersion) {
-            (0, node_stage_1.logNotice)(`Basing next version on version ${argv.ecsTaskFamily}:${argv.ecsBaseTaskVersion}`);
+            (0, cli_1.logNotice)(`Basing next version on version ${argv.ecsTaskFamily}:${argv.ecsBaseTaskVersion}`);
         }
         const previousTaskDefinition = await (0, aws_helper_1.ecsGetCurrentTaskDefinition)({
             region: argv.awsRegion,
@@ -158,20 +162,20 @@ exports.command = {
             if (previousVersion) {
                 const cleanedVersion = (0, semver_1.clean)(previousVersion.replace(/^([^0-9]+)/, ""));
                 if (!cleanedVersion) {
-                    (0, node_stage_1.logWarning)("Version could not be parsed");
+                    (0, cli_1.logWarning)("Version could not be parsed");
                 }
                 else {
                     // make the version ${stage}-0.0.1
                     version = `${argv.stage}-${(0, semver_1.inc)(cleanedVersion, "patch")}`;
-                    (0, node_stage_1.logInfo)("Incrementing version");
+                    (0, cli_1.logInfo)("Incrementing version");
                 }
             }
             else {
-                (0, node_stage_1.logNotice)("No version provided");
+                (0, cli_1.logNotice)("No version provided");
             }
         }
         else {
-            (0, node_stage_1.logVariable)(`${globalPrefix}__version`, version);
+            (0, cli_1.logVariable)(`${globalPrefix}__version`, version);
         }
         // override task container env from config.yaml
         if (argv.config.ecsEnv && typeof argv.config.ecsEnv === "object") {
@@ -232,16 +236,16 @@ exports.command = {
             cpu: previousTaskDefinition.cpu,
             memory: previousTaskDefinition.memory,
         };
-        (0, node_stage_1.logBanner)("Container Definition Diff");
+        (0, cli_1.logBanner)("Container Definition Diff");
         (0, diff_helper_1.printDiff)(previousContainerDefinition, taskDefinitionRequest?.containerDefinitions?.[0] || {});
-        (0, node_stage_1.logBanner)("Update task definition & service");
+        (0, cli_1.logBanner)("Update task definition & service");
         if (!argv.ci) {
-            if (!(await (0, node_stage_1.confirm)("Press enter to deploy task to ECS..."))) {
-                (0, node_stage_1.logInfo)("Canceled");
+            if (!(await (0, cli_1.confirm)("Press enter to deploy task to ECS..."))) {
+                (0, cli_1.logInfo)("Canceled");
                 return;
             }
         }
-        (0, node_stage_1.logInfo)("Creating new task..");
+        (0, cli_1.logInfo)("Creating new task..");
         const taskDefinition = await (0, aws_helper_1.ecsRegisterTaskDefinition)({
             region: argv.awsRegion,
             taskDefinitionRequest,
@@ -251,9 +255,9 @@ exports.command = {
             // this can't really happen, the call above should error out
             throw new Error("Task could not be registered.");
         }
-        (0, node_stage_1.logBanner)("Task Definition Diff");
+        (0, cli_1.logBanner)("Task Definition Diff");
         (0, diff_helper_1.printDiff)(taskDefinition, previousTaskDefinition);
-        (0, node_stage_1.logInfo)(`Updating service task to revision ${taskDefinition.revision}...`);
+        (0, cli_1.logInfo)(`Updating service task to revision ${taskDefinition.revision}...`);
         await (0, aws_helper_1.ecsUpdateService)({
             region: argv.awsRegion,
             service: argv.ecsServiceName,
@@ -261,8 +265,8 @@ exports.command = {
             taskDefinition: taskDefinition.taskDefinitionArn,
         });
         if (!argv.ci) {
-            (0, node_stage_1.logSuccess)(`Service updated. You can exit by using CTRL-C now.`);
-            (0, node_stage_1.logBanner)("Service Monitor");
+            (0, cli_1.logSuccess)(`Service updated. You can exit by using CTRL-C now.`);
+            (0, cli_1.logBanner)("Service Monitor");
             const watch = (0, aws_helper_1.ecsWatch)({
                 region: argv.awsRegion,
                 cluster: argv.ecsClusterName,
@@ -272,16 +276,16 @@ exports.command = {
                     case "services":
                         if (!message.services.some((x) => x?.deployments?.some((d) => d.desiredCount !== d.runningCount ||
                             d.rolloutState !== "COMPLETED"))) {
-                            (0, node_stage_1.logSuccess)("Service successfully deployed!");
+                            (0, cli_1.logSuccess)("Service successfully deployed!");
                             watch.stop();
                         }
                         break;
                     case "deployment":
                         const d = message.deployment;
-                        console.log(`[${node_stage_1.chk.yellow(d.taskDefinition?.replace(/^[^\/]+/, ""))} ${d.status} Running ${d.runningCount}/${d.desiredCount} Pending ${d.pendingCount} Rollout ${d.rolloutState}`);
+                        console.log(`[${chalk_1.chk.yellow(d.taskDefinition?.replace(/^[^\/]+/, ""))} ${d.status} Running ${d.runningCount}/${d.desiredCount} Pending ${d.pendingCount} Rollout ${d.rolloutState}`);
                         break;
                     default:
-                        console.log(`[${node_stage_1.chk.magenta(message.source)} ${message.createdAt.toISOString()}] ${message.message}`);
+                        console.log(`[${chalk_1.chk.magenta(message.source)} ${message.createdAt.toISOString()}] ${message.message}`);
                         break;
                 }
             });

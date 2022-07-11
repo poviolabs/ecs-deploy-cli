@@ -6,7 +6,7 @@ const client_ecr_1 = require("@aws-sdk/client-ecr");
 const credential_provider_ini_1 = require("@aws-sdk/credential-provider-ini");
 const credential_provider_env_1 = require("@aws-sdk/credential-provider-env");
 const client_sts_1 = require("@aws-sdk/client-sts");
-const node_stage_1 = require("node-stage");
+const cli_1 = require("node-stage/cli");
 function getCredentials() {
     if (process.env.AWS_PROFILE) {
         return (0, credential_provider_ini_1.fromIni)();
@@ -35,7 +35,7 @@ async function ecrImageExists(options) {
             imageIds: options.imageIds,
         }));
         if (process.env.VERBOSE) {
-            (0, node_stage_1.logVerbose)(JSON.stringify(images.imageDetails));
+            (0, cli_1.logVerbose)(JSON.stringify(images.imageDetails));
         }
     }
     catch (e) {
@@ -104,7 +104,7 @@ async function ecsGetCurrentTaskDefinition(options) {
         taskDefinition: options.taskDefinition,
     }))).taskDefinition;
     if (process.env.VERBOSE) {
-        (0, node_stage_1.logVerbose)(JSON.stringify(taskDefinition));
+        (0, cli_1.logVerbose)(JSON.stringify(taskDefinition));
     }
     return taskDefinition;
 }
@@ -113,7 +113,7 @@ async function ecsRegisterTaskDefinition(options) {
     const ecs = getECSInstance({ region: options.region });
     const taskDefinition = (await ecs.send(new client_ecs_1.RegisterTaskDefinitionCommand(options.taskDefinitionRequest))).taskDefinition;
     if (process.env.VERBOSE) {
-        (0, node_stage_1.logVerbose)(JSON.stringify(taskDefinition));
+        (0, cli_1.logVerbose)(JSON.stringify(taskDefinition));
     }
     return taskDefinition;
 }
@@ -126,7 +126,7 @@ async function ecsUpdateService(options) {
         taskDefinition: options.taskDefinition,
     }))).service;
     if (process.env.VERBOSE) {
-        (0, node_stage_1.logVerbose)(JSON.stringify(service));
+        (0, cli_1.logVerbose)(JSON.stringify(service));
     }
     return service;
 }

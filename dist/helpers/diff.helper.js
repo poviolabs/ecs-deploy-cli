@@ -2,14 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.printDiff = void 0;
 const diff_1 = require("diff");
-const node_stage_1 = require("node-stage");
+const chalk_1 = require("node-stage/chalk");
 function printDiff(one, two) {
     for (const { value, added, removed } of (0, diff_1.diffJson)(one, two)) {
         if (added) {
-            console.log(node_stage_1.chk.yellow(value.replace(/\n$/, "")));
+            console.log(chalk_1.chk.yellow(value.replace(/\n$/, "")));
         }
         else if (removed) {
-            console.log(node_stage_1.chk.green(value.replace(/\n$/, "")));
+            console.log(chalk_1.chk.green(value.replace(/\n$/, "")));
         }
         else {
             const text = value.replace(/\n$/, "").split("\n");

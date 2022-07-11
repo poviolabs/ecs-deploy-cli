@@ -13,36 +13,38 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.command = void 0;
-const node_stage_1 = require("node-stage");
+const yargs_1 = require("node-stage/yargs");
+const cli_1 = require("node-stage/cli");
+const chalk_1 = require("node-stage/chalk");
 const aws_helper_1 = require("../helpers/aws.helper");
 class EcsWatchOptions {
 }
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "PWD", demandOption: true }),
+    (0, yargs_1.Option)({ envAlias: "PWD", demandOption: true }),
     __metadata("design:type", String)
 ], EcsWatchOptions.prototype, "pwd", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "STAGE", demandOption: true }),
+    (0, yargs_1.Option)({ envAlias: "STAGE", demandOption: true }),
     __metadata("design:type", String)
 ], EcsWatchOptions.prototype, "stage", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "ECS_CLUSTER_NAME", demandOption: true }),
+    (0, yargs_1.Option)({ envAlias: "ECS_CLUSTER_NAME", demandOption: true }),
     __metadata("design:type", String)
 ], EcsWatchOptions.prototype, "ecsClusterName", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "ECS_SERVICE_NAME" }),
+    (0, yargs_1.Option)({ envAlias: "ECS_SERVICE_NAME" }),
     __metadata("design:type", String)
 ], EcsWatchOptions.prototype, "ecsServiceName", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "AWS_REGION", demandOption: true }),
+    (0, yargs_1.Option)({ envAlias: "AWS_REGION", demandOption: true }),
     __metadata("design:type", String)
 ], EcsWatchOptions.prototype, "awsRegion", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "VERBOSE", default: false }),
+    (0, yargs_1.Option)({ envAlias: "VERBOSE", default: false }),
     __metadata("design:type", Boolean)
 ], EcsWatchOptions.prototype, "verbose", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ default: 10, describe: "Time in seconds between checks" }),
+    (0, yargs_1.Option)({ default: 10, describe: "Time in seconds between checks" }),
     __metadata("design:type", Number)
 ], EcsWatchOptions.prototype, "delay", void 0);
 exports.command = {
@@ -50,14 +52,14 @@ exports.command = {
     describe: "Watch the ECS Service",
     builder: async (y) => {
         return y
-            .options((0, node_stage_1.getYargsOptions)(EcsWatchOptions))
+            .options((0, yargs_1.getYargsOptions)(EcsWatchOptions))
             .middleware(async (_argv) => {
-            return (await (0, node_stage_1.loadYargsConfig)(EcsWatchOptions, _argv, "ecsDeploy"));
+            return (await (0, yargs_1.loadYargsConfig)(EcsWatchOptions, _argv, "ecsDeploy"));
         }, true);
     },
     handler: async (_argv) => {
         const argv = (await _argv);
-        (0, node_stage_1.logNotice)(`Watching ${argv.ecsServiceName}`);
+        (0, cli_1.logNotice)(`Watching ${argv.ecsServiceName}`);
         await (0, aws_helper_1.ecsWatch)({
             region: argv.awsRegion,
             cluster: argv.ecsClusterName,
@@ -66,10 +68,10 @@ exports.command = {
             switch (message.type) {
                 case "deployment":
                     const d = message.deployment;
-                    console.log(`[${node_stage_1.chk.yellow(d.taskDefinition?.replace(/^[^\/]+/, ""))} ${d.status} Running ${d.runningCount}/${d.desiredCount} Pending ${d.pendingCount} Rollout ${d.rolloutState}`);
+                    console.log(`[${chalk_1.chk.yellow(d.taskDefinition?.replace(/^[^\/]+/, ""))} ${d.status} Running ${d.runningCount}/${d.desiredCount} Pending ${d.pendingCount} Rollout ${d.rolloutState}`);
                     break;
                 case "message":
-                    console.log(`[${node_stage_1.chk.magenta(message.source)} ${message.createdAt.toISOString()}] ${message.message}`);
+                    console.log(`[${chalk_1.chk.magenta(message.source)} ${message.createdAt.toISOString()}] ${message.message}`);
                     break;
             }
         }).promise;

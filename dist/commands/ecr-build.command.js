@@ -19,25 +19,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.command = void 0;
 const path_1 = __importDefault(require("path"));
 const node_stage_1 = require("node-stage");
+const yargs_1 = require("node-stage/yargs");
+const cli_1 = require("node-stage/cli");
+const chalk_1 = require("node-stage/chalk");
+const git_1 = require("node-stage/git");
 const version_helper_1 = require("../helpers/version.helper");
 const aws_helper_1 = require("../helpers/aws.helper");
 const docker_helper_1 = require("../helpers/docker.helper");
 class EcrBuildOptions {
 }
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "PWD", demandOption: true }),
+    (0, yargs_1.Option)({ envAlias: "PWD", demandOption: true }),
     __metadata("design:type", String)
 ], EcrBuildOptions.prototype, "pwd", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "STAGE" }),
+    (0, yargs_1.Option)({ envAlias: "STAGE" }),
     __metadata("design:type", String)
 ], EcrBuildOptions.prototype, "stage", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "RELEASE", demandOption: true }),
+    (0, yargs_1.Option)({ envAlias: "RELEASE", demandOption: true }),
     __metadata("design:type", String)
 ], EcrBuildOptions.prototype, "release", void 0);
 __decorate([
-    (0, node_stage_1.Option)({
+    (0, yargs_1.Option)({
         envAlias: "RELEASE_STRATEGY",
         default: "gitsha",
         choices: ["gitsha", "gitsha-stage"],
@@ -46,7 +50,7 @@ __decorate([
     __metadata("design:type", String)
 ], EcrBuildOptions.prototype, "releaseStrategy", void 0);
 __decorate([
-    (0, node_stage_1.Option)({
+    (0, yargs_1.Option)({
         envAlias: "AWS_REPO_NAME",
         demandOption: true,
         alias: ["awsRepoName"],
@@ -54,54 +58,54 @@ __decorate([
     __metadata("design:type", String)
 ], EcrBuildOptions.prototype, "ecrRepoName", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ describe: "Pull image from ECR to use as a base" }),
+    (0, yargs_1.Option)({ describe: "Pull image from ECR to use as a base" }),
     __metadata("design:type", Boolean)
 ], EcrBuildOptions.prototype, "ecrCache", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "AWS_REGION", demandOption: true }),
+    (0, yargs_1.Option)({ envAlias: "AWS_REGION", demandOption: true }),
     __metadata("design:type", String)
 ], EcrBuildOptions.prototype, "awsRegion", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "AWS_ACCOUNT_ID", demandOption: true }),
+    (0, yargs_1.Option)({ envAlias: "AWS_ACCOUNT_ID", demandOption: true }),
     __metadata("design:type", String)
 ], EcrBuildOptions.prototype, "awsAccountId", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "IGNORE_GIT_CHANGES" }),
+    (0, yargs_1.Option)({ envAlias: "IGNORE_GIT_CHANGES" }),
     __metadata("design:type", Boolean)
 ], EcrBuildOptions.prototype, "ignoreGitChanges", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "CI" }),
+    (0, yargs_1.Option)({ envAlias: "CI" }),
     __metadata("design:type", Boolean)
 ], EcrBuildOptions.prototype, "ci", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "SKIP_ECR_EXISTS_CHECK" }),
+    (0, yargs_1.Option)({ envAlias: "SKIP_ECR_EXISTS_CHECK" }),
     __metadata("design:type", Boolean)
 ], EcrBuildOptions.prototype, "skipEcrExistsCheck", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "DOCKERFILE_PATH", default: "Dockerfile" }),
+    (0, yargs_1.Option)({ envAlias: "DOCKERFILE_PATH", default: "Dockerfile" }),
     __metadata("design:type", String)
 ], EcrBuildOptions.prototype, "dockerfilePath", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "DOCKERFILE_CONTEXT" }),
+    (0, yargs_1.Option)({ envAlias: "DOCKERFILE_CONTEXT" }),
     __metadata("design:type", String)
 ], EcrBuildOptions.prototype, "dockerfileContext", void 0);
 __decorate([
-    (0, node_stage_1.Option)({
+    (0, yargs_1.Option)({
     // requires Docker daemon API  version 1.38
     // default: "linux/amd64"
     }),
     __metadata("design:type", String)
 ], EcrBuildOptions.prototype, "platform", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ default: false }),
+    (0, yargs_1.Option)({ default: false }),
     __metadata("design:type", Boolean)
 ], EcrBuildOptions.prototype, "buildx", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ default: false }),
+    (0, yargs_1.Option)({ default: false }),
     __metadata("design:type", Boolean)
 ], EcrBuildOptions.prototype, "skipPush", void 0);
 __decorate([
-    (0, node_stage_1.Option)({ envAlias: "VERBOSE", default: false }),
+    (0, yargs_1.Option)({ envAlias: "VERBOSE", default: false }),
     __metadata("design:type", Boolean)
 ], EcrBuildOptions.prototype, "verbose", void 0);
 exports.command = {
@@ -109,32 +113,32 @@ exports.command = {
     describe: "Build and Push the ECR Image",
     builder: async (y) => {
         return y
-            .options((0, node_stage_1.getYargsOptions)(EcrBuildOptions))
+            .options((0, yargs_1.getYargsOptions)(EcrBuildOptions))
             .middleware(async (_argv) => {
-            return (await (0, node_stage_1.loadYargsConfig)(EcrBuildOptions, _argv, "ecsDeploy"));
+            return (await (0, yargs_1.loadYargsConfig)(EcrBuildOptions, _argv, "ecsDeploy"));
         }, true);
     },
     handler: async (_argv) => {
         const argv = (await _argv);
-        (0, node_stage_1.logBanner)(`EcsDeploy ${(0, version_helper_1.getVersion)()}`);
-        for (const [k, v] of Object.entries(await (0, node_stage_1.getToolEnvironment)(argv))) {
-            (0, node_stage_1.logVariable)(k, v);
+        (0, cli_1.logBanner)(`EcsDeploy ${(0, version_helper_1.getVersion)()}`);
+        for (const [k, v] of Object.entries(await (0, cli_1.getToolEnvironment)(argv))) {
+            (0, cli_1.logVariable)(k, v);
         }
-        (0, node_stage_1.logBanner)("Build Environment");
+        (0, cli_1.logBanner)("Build Environment");
         if (!argv.ci) {
-            (0, node_stage_1.logInfo)("Running Interactively");
+            (0, cli_1.logInfo)("Running Interactively");
         }
-        const gitChanges = await (0, node_stage_1.getGitChanges)(argv.pwd);
+        const gitChanges = await (0, git_1.getGitChanges)(argv.pwd);
         if (gitChanges !== "") {
             if (argv.ignoreGitChanges) {
-                (0, node_stage_1.logWarning)("Changes detected in .git");
+                (0, cli_1.logWarning)("Changes detected in .git");
             }
             else {
                 if (gitChanges === undefined) {
-                    (0, node_stage_1.logError)("Error detecting Git");
+                    (0, cli_1.logError)("Error detecting Git");
                 }
                 else {
-                    (0, node_stage_1.logBanner)("Detected Changes in Git - Stage must be clean to build!");
+                    (0, cli_1.logBanner)("Detected Changes in Git - Stage must be clean to build!");
                     console.log(gitChanges);
                 }
                 process.exit(1);
@@ -150,14 +154,14 @@ exports.command = {
                 return acc;
             }, {}),
         });
-        (0, node_stage_1.logVariable)("release", argv.release);
-        (0, node_stage_1.logInfo)(`Docker Version: ${(await docker.version()).data}`);
+        (0, cli_1.logVariable)("release", argv.release);
+        (0, cli_1.logInfo)(`Docker Version: ${(await docker.version()).data}`);
         // load ECR details
         const imageName = `${argv.awsAccountId}.dkr.ecr.${argv.awsRegion}.amazonaws.com/${argv.ecrRepoName}:${argv.release}`;
-        (0, node_stage_1.logInfo)(`Image name: ${imageName}`);
-        (0, node_stage_1.logInfo)("Setting up AWS Docker Auth...");
+        (0, cli_1.logInfo)(`Image name: ${imageName}`);
+        (0, cli_1.logInfo)("Setting up AWS Docker Auth...");
         const identity = await (0, aws_helper_1.getAwsIdentity)({ region: argv.awsRegion });
-        (0, node_stage_1.logInfo)(`AWS User Arn: ${identity.Arn}`);
+        (0, cli_1.logInfo)(`AWS User Arn: ${identity.Arn}`);
         const ecrCredentials = await (0, aws_helper_1.ecrGetDockerCredentials)({
             region: argv.awsRegion,
         });
@@ -166,7 +170,7 @@ exports.command = {
             username: "AWS",
             password: ecrCredentials.password,
         });
-        (0, node_stage_1.logInfo)("AWS ECR Docker Login succeeded");
+        (0, cli_1.logInfo)("AWS ECR Docker Login succeeded");
         // check if image already exists
         if (!argv.skipEcrExistsCheck) {
             if (await (0, aws_helper_1.ecrImageExists)({
@@ -174,7 +178,7 @@ exports.command = {
                 repositoryName: argv.ecrRepoName,
                 imageIds: [{ imageTag: argv.release }],
             })) {
-                (0, node_stage_1.logInfo)("Image already exists");
+                (0, cli_1.logInfo)("Image already exists");
                 return;
             }
         }
@@ -190,14 +194,14 @@ exports.command = {
                 repositoryName: argv.ecrRepoName,
             });
             previousImageName = `${argv.awsAccountId}.dkr.ecr.${argv.awsRegion}.amazonaws.com/${argv.ecrRepoName}:${previousImageTag}`;
-            (0, node_stage_1.logInfo)(`Using cache image: ${previousImageName}`);
+            (0, cli_1.logInfo)(`Using cache image: ${previousImageName}`);
             await docker.imagePull(imageName, { verbose: true });
         }
         const dockerfileContext = path_1.default.resolve(argv.dockerfileContext || argv.pwd);
         const dockerfilePath = path_1.default.join(dockerfileContext, argv.dockerfilePath);
         if (argv.dockerfileContext || argv.dockerfilePath !== "Dockerfile") {
-            (0, node_stage_1.logNotice)(`Dockerfile context: ${dockerfileContext}`);
-            (0, node_stage_1.logNotice)(`Dockerfile path: ${dockerfilePath}`);
+            (0, cli_1.logNotice)(`Dockerfile context: ${dockerfileContext}`);
+            (0, cli_1.logNotice)(`Dockerfile path: ${dockerfilePath}`);
         }
         // next.js needs to have per stage build time variables
         //  check that we are not reusing the image in multiple stages
@@ -208,7 +212,7 @@ exports.command = {
         }
         // build image
         if (argv.buildx || !(await docker.imageExists(imageName)).data) {
-            (0, node_stage_1.logInfo)("Building docker image");
+            (0, cli_1.logInfo)("Building docker image");
             await docker.imageBuild({
                 imageName,
                 src: [dockerfilePath],
@@ -225,10 +229,10 @@ exports.command = {
         }
         if (!argv.skipPush) {
             if (!argv.buildx) {
-                (0, node_stage_1.logInfo)("Pushing to ECR...");
+                (0, cli_1.logInfo)("Pushing to ECR...");
                 await docker.imagePush(imageName, { verbose: true });
             }
-            (0, node_stage_1.logInfo)(`Done! Deploy the service with  ${node_stage_1.chk.magenta(`yarn ecs-deploy-cli deploy --stage ${argv.stage}`)}`);
+            (0, cli_1.logInfo)(`Done! Deploy the service with  ${chalk_1.chk.magenta(`yarn ecs-deploy-cli deploy --stage ${argv.stage}`)}`);
         }
     },
 };
