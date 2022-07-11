@@ -120,6 +120,7 @@ exports.command = {
     },
     handler: async (_argv) => {
         const argv = (await _argv);
+        await (0, chalk_1.loadColors)();
         (0, cli_1.logBanner)(`EcsDeploy ${(0, version_helper_1.getVersion)()}`);
         for (const [k, v] of Object.entries(await (0, cli_1.getToolEnvironment)(argv))) {
             (0, cli_1.logVariable)(k, v);

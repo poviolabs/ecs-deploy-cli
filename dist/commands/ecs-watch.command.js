@@ -59,6 +59,7 @@ exports.command = {
     },
     handler: async (_argv) => {
         const argv = (await _argv);
+        await (0, chalk_1.loadColors)();
         (0, cli_1.logNotice)(`Watching ${argv.ecsServiceName}`);
         await (0, aws_helper_1.ecsWatch)({
             region: argv.awsRegion,
