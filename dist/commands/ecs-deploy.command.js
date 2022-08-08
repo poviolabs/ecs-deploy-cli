@@ -11,6 +11,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.command = void 0;
 const semver_1 = require("semver");
@@ -46,7 +47,7 @@ __decorate([
         choices: ["gitsha", "gitsha-stage"],
         type: "string",
     }),
-    __metadata("design:type", String)
+    __metadata("design:type", typeof (_a = typeof node_stage_1.ReleaseStrategy !== "undefined" && node_stage_1.ReleaseStrategy) === "function" ? _a : Object)
 ], EcsDeployOptions.prototype, "releaseStrategy", void 0);
 __decorate([
     (0, yargs_1.Option)({ envAlias: "AWS_REPO_NAME", demandOption: true }),
