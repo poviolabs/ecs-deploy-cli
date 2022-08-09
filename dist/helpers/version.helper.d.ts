@@ -1,4 +1,4 @@
 /**
  * Fetch the version from package.json
  */
-export declare function getVersion(root?: any): string | undefined;
+export declare function getVersion(root?: string): string | undefined;

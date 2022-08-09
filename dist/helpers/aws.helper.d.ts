@@ -15,7 +15,7 @@ export declare function ecrGetLatestImageTag(options: {
 export declare function ecrGetDockerCredentials(options: {
     region: string;
 }): Promise<{
-    password: any;
+    password: string;
     username: string;
     endpoint: string;
 }>;

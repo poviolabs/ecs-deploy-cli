@@ -15,7 +15,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.command = void 0;
 const path_1 = __importDefault(require("path"));
@@ -48,7 +47,7 @@ __decorate([
         choices: ["gitsha", "gitsha-stage"],
         type: "string",
     }),
-    __metadata("design:type", typeof (_a = typeof node_stage_1.ReleaseStrategy !== "undefined" && node_stage_1.ReleaseStrategy) === "function" ? _a : Object)
+    __metadata("design:type", String)
 ], EcrBuildOptions.prototype, "releaseStrategy", void 0);
 __decorate([
     (0, yargs_1.Option)({
