@@ -1,10 +1,10 @@
 {
   "name": "@poviolabs/ecs-deploy-cli",
-  "version": "2.0.7",
+  "version": "2.0.9",
   "packageManager": "yarn@3.2.1",
   "bin": "./dist/sh.js",
   "scripts": {
-    "build": "yarn clean && yarn version patch && yarn run build:cli",
+    "build": "yarn clean && npm version patch --no-git-tag-version && yarn run build:cli",
     "build:cli": "tsc -p ./tsconfig.json && chmod +x ./dist/sh.js",
     "clean": "node tools/cleanup",
     "test": "jest --no-cache --runInBand",
@@ -40,7 +40,7 @@
     "@aws-sdk/credential-provider-ini": "^3.121.0",
     "@aws-sdk/node-config-provider": "^3.110.0",
     "diff": "^5.1.0",
-    "node-stage": "github:poviolabs/node-stage.git#174bfa9570a37005cbd687b6d4111cec18eee20a",
+    "node-stage": "github:poviolabs/node-stage.git#4df5c823e401d49c6adcfb4be91433a6b066d30a",
     "semver": "^7.3.7",
     "yargs": "^17.5.1"
   },

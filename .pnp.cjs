@@ -58,7 +58,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-import-helpers", "virtual:61d7d6aea3136d5f607af413bffbc385289f8d06c38ca8494b7f2003114f51487384519d3341ff80140cc7501883fa08db15bd1f662a671aa4d7f3e4c3f7c6fb#npm:1.2.1"],\
             ["eslint-plugin-prettier", "virtual:61d7d6aea3136d5f607af413bffbc385289f8d06c38ca8494b7f2003114f51487384519d3341ff80140cc7501883fa08db15bd1f662a671aa4d7f3e4c3f7c6fb#npm:4.2.1"],\
             ["jest", "virtual:61d7d6aea3136d5f607af413bffbc385289f8d06c38ca8494b7f2003114f51487384519d3341ff80140cc7501883fa08db15bd1f662a671aa4d7f3e4c3f7c6fb#npm:28.1.2"],\
-            ["node-stage", "https://github.com/poviolabs/node-stage.git#commit=174bfa9570a37005cbd687b6d4111cec18eee20a"],\
+            ["node-stage", "https://github.com/poviolabs/node-stage.git#commit=4df5c823e401d49c6adcfb4be91433a6b066d30a"],\
             ["prettier", "npm:2.7.1"],\
             ["semver", "npm:7.3.7"],\
             ["source-map-support", "npm:0.5.21"],\
@@ -2223,7 +2223,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-import-helpers", "virtual:61d7d6aea3136d5f607af413bffbc385289f8d06c38ca8494b7f2003114f51487384519d3341ff80140cc7501883fa08db15bd1f662a671aa4d7f3e4c3f7c6fb#npm:1.2.1"],\
             ["eslint-plugin-prettier", "virtual:61d7d6aea3136d5f607af413bffbc385289f8d06c38ca8494b7f2003114f51487384519d3341ff80140cc7501883fa08db15bd1f662a671aa4d7f3e4c3f7c6fb#npm:4.2.1"],\
             ["jest", "virtual:61d7d6aea3136d5f607af413bffbc385289f8d06c38ca8494b7f2003114f51487384519d3341ff80140cc7501883fa08db15bd1f662a671aa4d7f3e4c3f7c6fb#npm:28.1.2"],\
-            ["node-stage", "https://github.com/poviolabs/node-stage.git#commit=174bfa9570a37005cbd687b6d4111cec18eee20a"],\
+            ["node-stage", "https://github.com/poviolabs/node-stage.git#commit=4df5c823e401d49c6adcfb4be91433a6b066d30a"],\
             ["prettier", "npm:2.7.1"],\
             ["semver", "npm:7.3.7"],\
             ["source-map-support", "npm:0.5.21"],\
@@ -5714,10 +5714,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["node-stage", [\
-        ["https://github.com/poviolabs/node-stage.git#commit=174bfa9570a37005cbd687b6d4111cec18eee20a", {\
-          "packageLocation": "./.yarn/cache/node-stage-https-26aaff59ca-caa8caf2df.zip/node_modules/node-stage/",\
+        ["https://github.com/poviolabs/node-stage.git#commit=4df5c823e401d49c6adcfb4be91433a6b066d30a", {\
+          "packageLocation": "./.yarn/cache/node-stage-https-8d6b444107-97e6b21728.zip/node_modules/node-stage/",\
           "packageDependencies": [\
-            ["node-stage", "https://github.com/poviolabs/node-stage.git#commit=174bfa9570a37005cbd687b6d4111cec18eee20a"],\
+            ["node-stage", "https://github.com/poviolabs/node-stage.git#commit=4df5c823e401d49c6adcfb4be91433a6b066d30a"],\
             ["chalk", "npm:4.1.2"],\
             ["dotenv", "npm:16.0.1"],\
             ["prompt-sync", "npm:4.2.0"],\
