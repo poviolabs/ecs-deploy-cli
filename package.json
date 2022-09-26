@@ -33,19 +33,19 @@
     "Marko Zabreznik <marko.zabreznik@poviolabs.com>"
   ],
   "dependencies": {
-    "@aws-sdk/client-ecr": "^3.121.0",
-    "@aws-sdk/client-ecs": "^3.121.0",
-    "@aws-sdk/client-sts": "^3.121.0",
-    "@aws-sdk/credential-provider-env": "^3.110.0",
-    "@aws-sdk/credential-provider-ini": "^3.121.0",
-    "@aws-sdk/node-config-provider": "^3.110.0",
+    "@aws-sdk/client-ecr": "3.121.0",
+    "@aws-sdk/client-ecs": "3.121.0",
+    "@aws-sdk/client-sts": "3.121.0",
+    "@aws-sdk/credential-provider-env": "3.110.0",
+    "@aws-sdk/credential-provider-ini": "3.121.0",
+    "@aws-sdk/node-config-provider": "3.110.0",
     "diff": "^5.1.0",
     "node-stage": "github:poviolabs/node-stage.git#4df5c823e401d49c6adcfb4be91433a6b066d30a",
     "semver": "^7.3.7",
     "yargs": "^17.5.1"
   },
   "devDependencies": {
-    "@aws-sdk/types": "^3.110.0",
+    "@aws-sdk/types": "3.110.0",
     "@jest/types": "^28.1.1",
     "@swc/core": "^1.2.204",
     "@swc/jest": "^0.2.21",
