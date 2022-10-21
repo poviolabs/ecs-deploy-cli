@@ -13,9 +13,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.command = void 0;
-const yargs_1 = require("node-stage/yargs");
-const cli_1 = require("node-stage/cli");
-const chalk_1 = require("node-stage/chalk");
+const yargs_1 = require("@povio/node-stage/yargs");
+const cli_1 = require("@povio/node-stage/cli");
+const chalk_1 = require("@povio/node-stage/chalk");
 const aws_helper_1 = require("../helpers/aws.helper");
 class EcsWatchOptions {
 }

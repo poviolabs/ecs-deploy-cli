@@ -6,13 +6,13 @@
 import yargs from "yargs";
 import path from "path";
 
-import { Config, ReleaseStrategy } from "node-stage";
+import { Config, ReleaseStrategy } from "@povio/node-stage";
 import {
   Option,
   YargsOptions,
   loadYargsConfig,
   getYargsOptions,
-} from "node-stage/yargs";
+} from "@povio/node-stage/yargs";
 import {
   logBanner,
   getToolEnvironment,
@@ -21,9 +21,9 @@ import {
   logWarning,
   logNotice,
   logError,
-} from "node-stage/cli";
-import { chk, loadColors } from "node-stage/chalk";
-import { getGitChanges } from "node-stage/git";
+} from "@povio/node-stage/cli";
+import { chk, loadColors } from "@povio/node-stage/chalk";
+import { getGitChanges } from "@povio/node-stage/git";
 
 import { getVersion } from "../helpers/version.helper";
 

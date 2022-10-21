@@ -4,15 +4,15 @@
 
 import yargs from "yargs";
 
-import { Config } from "node-stage";
+import { Config } from "@povio/node-stage";
 import {
   getYargsOptions,
   Option,
   YargsOptions,
   loadYargsConfig,
-} from "node-stage/yargs";
-import { logNotice } from "node-stage/cli";
-import { chk, loadColors } from "node-stage/chalk";
+} from "@povio/node-stage/yargs";
+import { logNotice } from "@povio/node-stage/cli";
+import { chk, loadColors } from "@povio/node-stage/chalk";
 
 import { ecsWatch } from "../helpers/aws.helper";
 

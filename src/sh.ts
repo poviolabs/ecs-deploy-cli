@@ -2,7 +2,7 @@
 
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import { logError, logInfo } from "node-stage/cli";
+import { logError, logInfo } from "@povio/node-stage/cli";
 
 import { command as buildCommand } from "./commands/ecr-build.command";
 import { command as deployCommand } from "./commands/ecs-deploy.command";

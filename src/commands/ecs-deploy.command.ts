@@ -6,15 +6,14 @@ import yargs from "yargs";
 import { clean as semverClean, inc as semverInc } from "semver";
 import { RegisterTaskDefinitionCommandInput } from "@aws-sdk/client-ecs";
 
-import { Config, ReleaseStrategy } from "node-stage";
+import { Config, ReleaseStrategy } from "@povio/node-stage";
 import {
   Option,
   YargsOptions,
   loadYargsConfig,
   getYargsOptions,
-} from "node-stage/yargs";
+} from "@povio/node-stage/yargs";
 import {
-
   logBanner,
   getToolEnvironment,
   logVariable,
@@ -23,8 +22,8 @@ import {
   logNotice,
   confirm,
   logSuccess,
-} from "node-stage/cli";
-import { chk, loadColors } from "node-stage/chalk";
+} from "@povio/node-stage/cli";
+import { chk, loadColors } from "@povio/node-stage/chalk";
 
 import {
   ecrImageExists,

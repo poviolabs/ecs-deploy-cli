@@ -18,11 +18,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.command = void 0;
 const path_1 = __importDefault(require("path"));
-const node_stage_1 = require("node-stage");
-const yargs_1 = require("node-stage/yargs");
-const cli_1 = require("node-stage/cli");
-const chalk_1 = require("node-stage/chalk");
-const git_1 = require("node-stage/git");
+const node_stage_1 = require("@povio/node-stage");
+const yargs_1 = require("@povio/node-stage/yargs");
+const cli_1 = require("@povio/node-stage/cli");
+const chalk_1 = require("@povio/node-stage/chalk");
+const git_1 = require("@povio/node-stage/git");
 const version_helper_1 = require("../helpers/version.helper");
 const aws_helper_1 = require("../helpers/aws.helper");
 const docker_helper_1 = require("../helpers/docker.helper");

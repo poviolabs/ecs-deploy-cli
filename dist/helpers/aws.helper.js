@@ -6,7 +6,7 @@ const client_ecr_1 = require("@aws-sdk/client-ecr");
 const credential_provider_ini_1 = require("@aws-sdk/credential-provider-ini");
 const credential_provider_env_1 = require("@aws-sdk/credential-provider-env");
 const client_sts_1 = require("@aws-sdk/client-sts");
-const cli_1 = require("node-stage/cli");
+const cli_1 = require("@povio/node-stage/cli");
 function getCredentials() {
     if (process.env.AWS_PROFILE) {
         return (0, credential_provider_ini_1.fromIni)();

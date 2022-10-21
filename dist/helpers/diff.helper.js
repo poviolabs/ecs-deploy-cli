@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.printDiff = void 0;
 const diff_1 = require("diff");
-const chalk_1 = require("node-stage/chalk");
+const chalk_1 = require("@povio/node-stage/chalk");
 function printDiff(one, two) {
     for (const { value, added, removed } of (0, diff_1.diffJson)(one, two)) {
         if (added) {

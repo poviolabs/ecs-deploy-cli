@@ -6,7 +6,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const yargs_1 = __importDefault(require("yargs"));
 const helpers_1 = require("yargs/helpers");
-const cli_1 = require("node-stage/cli");
+const cli_1 = require("@povio/node-stage/cli");
 const ecr_build_command_1 = require("./commands/ecr-build.command");
 const ecs_deploy_command_1 = require("./commands/ecs-deploy.command");
 const ecs_watch_command_1 = require("./commands/ecs-watch.command");

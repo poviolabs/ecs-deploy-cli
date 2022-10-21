@@ -1,7 +1,7 @@
 {
-  "name": "ecs-deploy-cli",
-  "version": "3.0.0",
-  "packageManager": "yarn@3.2.2",
+  "name": "@povio/ecs-deploy-cli",
+  "version": "3.0.1",
+  "packageManager": "yarn@3.2.4",
   "bin": "./dist/sh.js",
   "scripts": {
     "build": "yarn clean && npm version patch --no-git-tag-version && yarn run build:cli",
@@ -30,18 +30,19 @@
     "type": "git"
   },
   "contributors": [
-    "Marko Zabreznik <marko.zabreznik@poviolabs.com>"
+    "Marko Zabreznik <marko.zabreznik@povio.com>",
+    "Adrian Jarc <adrian.jarc@povio.com>"
   ],
   "dependencies": {
-    "@aws-sdk/client-ecr": "3.121.0",
-    "@aws-sdk/client-ecs": "3.121.0",
-    "@aws-sdk/client-sts": "3.121.0",
-    "@aws-sdk/credential-provider-env": "3.110.0",
-    "@aws-sdk/credential-provider-ini": "3.121.0",
-    "@aws-sdk/node-config-provider": "3.110.0",
+    "@aws-sdk/client-ecr": "3.193.0",
+    "@aws-sdk/client-ecs": "3.193.0",
+    "@aws-sdk/client-sts": "3.193.0",
+    "@aws-sdk/credential-provider-env": "3.193.0",
+    "@aws-sdk/credential-provider-ini": "3.193.0",
+    "@aws-sdk/node-config-provider": "3.193.0",
+    "@povio/node-stage": "^2.0.6",
     "chalk": "^4.1.2",
     "diff": "^5.1.0",
-    "node-stage": "poviolabs/node-stage#v2",
     "prompt-sync": "^4.2.0",
     "semver": "^7.3.7",
     "simple-git": "^3.10.0",
