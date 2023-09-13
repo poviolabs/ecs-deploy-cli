@@ -213,6 +213,52 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@aws-sdk/client-ssm@npm:3.408.0":
+  version: 3.408.0
+  resolution: "@aws-sdk/client-ssm@npm:3.408.0"
+  dependencies:
+    "@aws-crypto/sha256-browser": 3.0.0
+    "@aws-crypto/sha256-js": 3.0.0
+    "@aws-sdk/client-sts": 3.408.0
+    "@aws-sdk/credential-provider-node": 3.408.0
+    "@aws-sdk/middleware-host-header": 3.408.0
+    "@aws-sdk/middleware-logger": 3.408.0
+    "@aws-sdk/middleware-recursion-detection": 3.408.0
+    "@aws-sdk/middleware-signing": 3.408.0
+    "@aws-sdk/middleware-user-agent": 3.408.0
+    "@aws-sdk/types": 3.408.0
+    "@aws-sdk/util-endpoints": 3.408.0
+    "@aws-sdk/util-user-agent-browser": 3.408.0
+    "@aws-sdk/util-user-agent-node": 3.408.0
+    "@smithy/config-resolver": ^2.0.5
+    "@smithy/fetch-http-handler": ^2.0.5
+    "@smithy/hash-node": ^2.0.5
+    "@smithy/invalid-dependency": ^2.0.5
+    "@smithy/middleware-content-length": ^2.0.5
+    "@smithy/middleware-endpoint": ^2.0.5
+    "@smithy/middleware-retry": ^2.0.5
+    "@smithy/middleware-serde": ^2.0.5
+    "@smithy/middleware-stack": ^2.0.0
+    "@smithy/node-config-provider": ^2.0.6
+    "@smithy/node-http-handler": ^2.0.5
+    "@smithy/protocol-http": ^2.0.5
+    "@smithy/smithy-client": ^2.0.5
+    "@smithy/types": ^2.2.2
+    "@smithy/url-parser": ^2.0.5
+    "@smithy/util-base64": ^2.0.0
+    "@smithy/util-body-length-browser": ^2.0.0
+    "@smithy/util-body-length-node": ^2.1.0
+    "@smithy/util-defaults-mode-browser": ^2.0.6
+    "@smithy/util-defaults-mode-node": ^2.0.6
+    "@smithy/util-retry": ^2.0.0
+    "@smithy/util-utf8": ^2.0.0
+    "@smithy/util-waiter": ^2.0.5
+    tslib: ^2.5.0
+    uuid: ^8.3.2
+  checksum: f591547ee5d41217a516f1bd11238279109e4d07775ee4e90a1188a021ad4b21888780f37a03a3bbb0c8f220c423e54d171ae6f9eb11df559987a898987b0af2
+  languageName: node
+  linkType: hard
+
 "@aws-sdk/client-sso@npm:3.408.0":
   version: 3.408.0
   resolution: "@aws-sdk/client-sso@npm:3.408.0"
@@ -2220,6 +2266,7 @@ __metadata:
   dependencies:
     "@aws-sdk/client-ecr": 3.408.0
     "@aws-sdk/client-ecs": 3.408.0
+    "@aws-sdk/client-ssm": 3.408.0
     "@aws-sdk/client-sts": 3.408.0
     "@aws-sdk/credential-providers": ^3.408.0
     "@aws-sdk/types": 3.408.0

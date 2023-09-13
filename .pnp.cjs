@@ -30,6 +30,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@aws-sdk/client-ecr", "npm:3.408.0"],\
             ["@aws-sdk/client-ecs", "npm:3.408.0"],\
+            ["@aws-sdk/client-ssm", "npm:3.408.0"],\
             ["@aws-sdk/client-sts", "npm:3.408.0"],\
             ["@aws-sdk/credential-providers", "npm:3.408.0"],\
             ["@aws-sdk/types", "npm:3.408.0"],\
@@ -278,6 +279,53 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@smithy/util-utf8", "npm:2.0.0"],\
             ["@smithy/util-waiter", "npm:2.0.6"],\
             ["tslib", "npm:2.6.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@aws-sdk/client-ssm", [\
+        ["npm:3.408.0", {\
+          "packageLocation": "./.yarn/cache/@aws-sdk-client-ssm-npm-3.408.0-3ab1d8a9f1-f591547ee5.zip/node_modules/@aws-sdk/client-ssm/",\
+          "packageDependencies": [\
+            ["@aws-sdk/client-ssm", "npm:3.408.0"],\
+            ["@aws-crypto/sha256-browser", "npm:3.0.0"],\
+            ["@aws-crypto/sha256-js", "npm:3.0.0"],\
+            ["@aws-sdk/client-sts", "npm:3.408.0"],\
+            ["@aws-sdk/credential-provider-node", "npm:3.408.0"],\
+            ["@aws-sdk/middleware-host-header", "npm:3.408.0"],\
+            ["@aws-sdk/middleware-logger", "npm:3.408.0"],\
+            ["@aws-sdk/middleware-recursion-detection", "npm:3.408.0"],\
+            ["@aws-sdk/middleware-signing", "npm:3.408.0"],\
+            ["@aws-sdk/middleware-user-agent", "npm:3.408.0"],\
+            ["@aws-sdk/types", "npm:3.408.0"],\
+            ["@aws-sdk/util-endpoints", "npm:3.408.0"],\
+            ["@aws-sdk/util-user-agent-browser", "npm:3.408.0"],\
+            ["@aws-sdk/util-user-agent-node", "virtual:84aae667d1603686f66fb3478ea1414decaee45a356f9ce9e5d20f74de39a84f33a433f4baaa333863826b1f58cf436570dce61269d247b1d48e9235088cee28#npm:3.408.0"],\
+            ["@smithy/config-resolver", "npm:2.0.7"],\
+            ["@smithy/fetch-http-handler", "npm:2.1.2"],\
+            ["@smithy/hash-node", "npm:2.0.6"],\
+            ["@smithy/invalid-dependency", "npm:2.0.6"],\
+            ["@smithy/middleware-content-length", "npm:2.0.8"],\
+            ["@smithy/middleware-endpoint", "npm:2.0.6"],\
+            ["@smithy/middleware-retry", "npm:2.0.9"],\
+            ["@smithy/middleware-serde", "npm:2.0.6"],\
+            ["@smithy/middleware-stack", "npm:2.0.0"],\
+            ["@smithy/node-config-provider", "npm:2.0.9"],\
+            ["@smithy/node-http-handler", "npm:2.1.2"],\
+            ["@smithy/protocol-http", "npm:2.0.5"],\
+            ["@smithy/smithy-client", "npm:2.1.2"],\
+            ["@smithy/types", "npm:2.3.0"],\
+            ["@smithy/url-parser", "npm:2.0.6"],\
+            ["@smithy/util-base64", "npm:2.0.0"],\
+            ["@smithy/util-body-length-browser", "npm:2.0.0"],\
+            ["@smithy/util-body-length-node", "npm:2.1.0"],\
+            ["@smithy/util-defaults-mode-browser", "npm:2.0.7"],\
+            ["@smithy/util-defaults-mode-node", "npm:2.0.9"],\
+            ["@smithy/util-retry", "npm:2.0.0"],\
+            ["@smithy/util-utf8", "npm:2.0.0"],\
+            ["@smithy/util-waiter", "npm:2.0.6"],\
+            ["tslib", "npm:2.6.2"],\
+            ["uuid", "npm:8.3.2"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -2638,6 +2686,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ecs-deploy-cli", "workspace:."],\
             ["@aws-sdk/client-ecr", "npm:3.408.0"],\
             ["@aws-sdk/client-ecs", "npm:3.408.0"],\
+            ["@aws-sdk/client-ssm", "npm:3.408.0"],\
             ["@aws-sdk/client-sts", "npm:3.408.0"],\
             ["@aws-sdk/credential-providers", "npm:3.408.0"],\
             ["@aws-sdk/types", "npm:3.408.0"],\
