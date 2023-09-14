@@ -50,6 +50,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint", "npm:8.48.0"],\
             ["eslint-config-prettier", "virtual:66957519a8fdc2f2538ee148c021abee78ed608dad18f5e6298f7c6ff888e566232a43c6d82f54e986e65cf1c5ac8c6ac61e510e452d4e66e2db9df209983b1d#npm:9.0.0"],\
             ["eslint-plugin-prettier", "virtual:66957519a8fdc2f2538ee148c021abee78ed608dad18f5e6298f7c6ff888e566232a43c6d82f54e986e65cf1c5ac8c6ac61e510e452d4e66e2db9df209983b1d#npm:5.0.0"],\
+            ["js-yaml", "npm:4.1.0"],\
             ["lodash.merge", "npm:4.6.2"],\
             ["prettier", "npm:3.0.3"],\
             ["prompt-sync", "npm:4.2.0"],\
@@ -2706,6 +2707,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint", "npm:8.48.0"],\
             ["eslint-config-prettier", "virtual:66957519a8fdc2f2538ee148c021abee78ed608dad18f5e6298f7c6ff888e566232a43c6d82f54e986e65cf1c5ac8c6ac61e510e452d4e66e2db9df209983b1d#npm:9.0.0"],\
             ["eslint-plugin-prettier", "virtual:66957519a8fdc2f2538ee148c021abee78ed608dad18f5e6298f7c6ff888e566232a43c6d82f54e986e65cf1c5ac8c6ac61e510e452d4e66e2db9df209983b1d#npm:5.0.0"],\
+            ["js-yaml", "npm:4.1.0"],\
             ["lodash.merge", "npm:4.6.2"],\
             ["prettier", "npm:3.0.3"],\
             ["prompt-sync", "npm:4.2.0"],\
