@@ -32,8 +32,10 @@ const RAW_RUNTIME_STATE =
           ["@aws-sdk/client-sts", "npm:3.461.0"],\
           ["@aws-sdk/credential-providers", "npm:3.461.0"],\
           ["@aws-sdk/types", "npm:3.460.0"],\
+          ["@eslint/js", "npm:8.54.0"],\
           ["@smithy/node-config-provider", "npm:2.1.6"],\
           ["@types/diff", "npm:5.0.8"],\
+          ["@types/eslint__js", "npm:8.42.3"],\
           ["@types/node", "npm:20.10.0"],\
           ["@types/prettier", "npm:3.0.0"],\
           ["@types/prompt-sync", "npm:4.2.3"],\
@@ -1411,8 +1413,10 @@ const RAW_RUNTIME_STATE =
           ["@aws-sdk/client-sts", "npm:3.461.0"],\
           ["@aws-sdk/credential-providers", "npm:3.461.0"],\
           ["@aws-sdk/types", "npm:3.460.0"],\
+          ["@eslint/js", "npm:8.54.0"],\
           ["@smithy/node-config-provider", "npm:2.1.6"],\
           ["@types/diff", "npm:5.0.8"],\
+          ["@types/eslint__js", "npm:8.42.3"],\
           ["@types/node", "npm:20.10.0"],\
           ["@types/prettier", "npm:3.0.0"],\
           ["@types/prompt-sync", "npm:4.2.3"],\
@@ -2034,11 +2038,48 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@types/eslint", [\
+      ["npm:8.44.7", {\
+        "packageLocation": "../../../.yarn/berry/cache/@types-eslint-npm-8.44.7-b116226242-10c0.zip/node_modules/@types/eslint/",\
+        "packageDependencies": [\
+          ["@types/eslint", "npm:8.44.7"],\
+          ["@types/estree", "npm:1.0.5"],\
+          ["@types/json-schema", "npm:7.0.15"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@types/eslint__js", [\
+      ["npm:8.42.3", {\
+        "packageLocation": "../../../.yarn/berry/cache/@types-eslint__js-npm-8.42.3-e0c8b0b091-10c0.zip/node_modules/@types/eslint__js/",\
+        "packageDependencies": [\
+          ["@types/eslint__js", "npm:8.42.3"],\
+          ["@types/eslint", "npm:8.44.7"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@types/estree", [\
+      ["npm:1.0.5", {\
+        "packageLocation": "../../../.yarn/berry/cache/@types-estree-npm-1.0.5-5b7faed3b4-10c0.zip/node_modules/@types/estree/",\
+        "packageDependencies": [\
+          ["@types/estree", "npm:1.0.5"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@types/json-schema", [\
       ["npm:7.0.12", {\
         "packageLocation": "../../../.yarn/berry/cache/@types-json-schema-npm-7.0.12-f05cfc0e99-10c0.zip/node_modules/@types/json-schema/",\
         "packageDependencies": [\
           ["@types/json-schema", "npm:7.0.12"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:7.0.15", {\
+        "packageLocation": "../../../.yarn/berry/cache/@types-json-schema-npm-7.0.15-fd16381786-10c0.zip/node_modules/@types/json-schema/",\
+        "packageDependencies": [\
+          ["@types/json-schema", "npm:7.0.15"]\
         ],\
         "linkType": "HARD"\
       }]\
