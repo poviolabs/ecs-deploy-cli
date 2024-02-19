@@ -37,6 +37,8 @@ const RAW_RUNTIME_STATE =
           ["@smithy/node-config-provider", "npm:2.2.1"],\
           ["@types/diff", "npm:5.0.9"],\
           ["@types/eslint__js", "npm:8.42.3"],\
+          ["@types/js-yaml", "npm:4.0.9"],\
+          ["@types/lodash.merge", "npm:4.6.9"],\
           ["@types/node", "npm:20.11.17"],\
           ["@types/prettier", "npm:3.0.0"],\
           ["@types/prompt-sync", "npm:4.2.3"],\
@@ -1363,6 +1365,8 @@ const RAW_RUNTIME_STATE =
           ["@smithy/node-config-provider", "npm:2.2.1"],\
           ["@types/diff", "npm:5.0.9"],\
           ["@types/eslint__js", "npm:8.42.3"],\
+          ["@types/js-yaml", "npm:4.0.9"],\
+          ["@types/lodash.merge", "npm:4.6.9"],\
           ["@types/node", "npm:20.11.17"],\
           ["@types/prettier", "npm:3.0.0"],\
           ["@types/prompt-sync", "npm:4.2.3"],\
@@ -1957,6 +1961,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@types/js-yaml", [\
+      ["npm:4.0.9", {\
+        "packageLocation": "../../../.yarn/berry/cache/@types-js-yaml-npm-4.0.9-6a16d01bd2-10c0.zip/node_modules/@types/js-yaml/",\
+        "packageDependencies": [\
+          ["@types/js-yaml", "npm:4.0.9"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@types/json-schema", [\
       ["npm:7.0.12", {\
         "packageLocation": "../../../.yarn/berry/cache/@types-json-schema-npm-7.0.12-f05cfc0e99-10c0.zip/node_modules/@types/json-schema/",\
@@ -1969,6 +1982,25 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../../.yarn/berry/cache/@types-json-schema-npm-7.0.15-fd16381786-10c0.zip/node_modules/@types/json-schema/",\
         "packageDependencies": [\
           ["@types/json-schema", "npm:7.0.15"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@types/lodash", [\
+      ["npm:4.14.202", {\
+        "packageLocation": "../../../.yarn/berry/cache/@types-lodash-npm-4.14.202-76de3e302b-10c0.zip/node_modules/@types/lodash/",\
+        "packageDependencies": [\
+          ["@types/lodash", "npm:4.14.202"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@types/lodash.merge", [\
+      ["npm:4.6.9", {\
+        "packageLocation": "../../../.yarn/berry/cache/@types-lodash.merge-npm-4.6.9-a6df58a50c-10c0.zip/node_modules/@types/lodash.merge/",\
+        "packageDependencies": [\
+          ["@types/lodash.merge", "npm:4.6.9"],\
+          ["@types/lodash", "npm:4.14.202"]\
         ],\
         "linkType": "HARD"\
       }]\
