@@ -16,16 +16,16 @@ Examples:
 # Usage
 
 ```bash
-yarn add ecs-deploy-cli@poviolabs/ecs-deploy-cli#v4
+yarn add ecs-deploy-cli@poviolabs/ecs-deploy-cli#v4.1
 
 # upgrade
-yarn up ecs-deploy-cli@poviolabs/ecs-deploy-cli#v4
+yarn up ecs-deploy-cli@poviolabs/ecs-deploy-cli#v4.1
 ```
 
 or install globally
 
 ```bash
-npm i --location=global ecs-deploy-cli@poviolabs/ecs-deploy-cli#v4 --force
+npm i --location=global ecs-deploy-cli@poviolabs/ecs-deploy-cli#v4.1 --force
 ```
 
 ## Configure
