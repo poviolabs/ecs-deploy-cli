@@ -1,0 +1,13 @@
+database:
+  from_env: value 1
+  stage: myapp-dev
+  items_with_template:
+    - name: static
+      value: value2
+    - name: thing
+      value: value 1
+  deep:
+    item:
+      five: six
+  host: localhost
+a_string: value 1

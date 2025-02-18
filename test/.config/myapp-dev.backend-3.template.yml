@@ -1,0 +1,27 @@
+database:
+  username: myapp2
+  from_env: ${env:MYAPP_RECORD1}
+  stage: ${func:stage}
+  items: [
+    {
+      object1: {
+        record: "value 2",
+      },
+    },
+    "value 3",
+  ]
+  items_with_template:
+    - name: static
+      value: value2
+    - name: thing
+      value: ${env:MYAPP_RECORD1}
+  deep:
+    item:
+      two: 1
+
+a_string: ${env:MYAPP_RECORD1}
+
+single_line_string: |
+  this should
+  remain a single string
+  with new lines

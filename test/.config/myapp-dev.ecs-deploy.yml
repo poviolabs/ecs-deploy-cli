@@ -91,3 +91,12 @@ configs:
 
       - name: database__host
         value: "localhost"
+
+  - name: backend-3
+    template: backend-3.template
+    destination: ./.config/myapp-dev.backend-3.yml
+    values:
+      - name: database__host
+        value: "localhost"
+      - name: database__deep__item__five
+        value: "six"

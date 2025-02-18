@@ -22,7 +22,7 @@ test("ze-config", async () => {
         //{
         //  name: "@",
         //  treeFrom: "arn:aws:ssm:::parameter/myapp-dev/",
-        //},
+        //}
       ],
     },
     {
@@ -49,5 +49,6 @@ test("ze-config", async () => {
         "value 3",
       ],
     },
+    single_line_string: "this should\nremain a single string\nwith new lines\n",
   });
 });

@@ -71,6 +71,10 @@ taskDefinition:
 configs:
   - name: backend
     destination: ./.config/myapp-dev.backend.yml
+    
+    # optional template, to diff the resolved data from
+    template: 
+    
     values:
         # load config from ./.config/${stage}.backend.template.yml
         # and interpolate ${arn:aws:ssm..} and ${env:ENV_VALUE} values

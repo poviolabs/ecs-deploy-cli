@@ -1,5 +1,4 @@
 import { z } from "zod";
-import merge from "lodash.merge";
 import { cosmiconfigSync } from "cosmiconfig";
 
 import { logError, logVerbose } from "./cli.helper";
@@ -33,8 +32,8 @@ export const ZeConfigItemValues = z.array(ZeConfigItemValue);
 export const ZeConfigItem = z.object({
   name: z.string().optional(),
   destination: z.string(),
-  source: z.string().optional(),
-  values: ZeConfigItemValues,
+  template: z.string().optional(),
+  values: ZeConfigItemValues.default([]),
 });
 export type ZeConfigItemValuesDto = z.output<typeof ZeConfigItemValues>;
 export type ZeConfigItemDto = z.output<typeof ZeConfigItem>;
@@ -300,4 +299,73 @@ export async function resolveConfig(
     }
   }
   return value;
+}
+
+/**
+ * Compute a different from the template to the destination
+ */
+export function calculateDiff(
+  template: Record<string, any>,
+  envData: Record<string, any>,
+) {
+  const diff: Record<string, any> = {};
+
+  for (const key in envData) {
+    if (!Object.prototype.hasOwnProperty.call(template, key)) {
+      diff[key] = envData[key];
+    } else if (Array.isArray(envData[key]) || Array.isArray(template[key])) {
+      // Replace arrays directly instead of merging
+      if (JSON.stringify(envData[key]) !== JSON.stringify(template[key])) {
+        diff[key] = envData[key];
+      }
+    } else if (
+      typeof envData[key] === "object" &&
+      envData[key] !== null &&
+      typeof template[key] === "object" &&
+      template[key] !== null
+    ) {
+      // Recursively calculate differences for objects
+      const nestedDiff = calculateDiff(template[key], envData[key]);
+      if (Object.keys(nestedDiff).length > 0) {
+        diff[key] = nestedDiff;
+      }
+    } else if (envData[key] !== template[key]) {
+      // Values differ
+      diff[key] = envData[key];
+    }
+  }
+
+  // Include keys that exist in template but not in envData if necessary (optional)
+  for (const key in template) {
+    if (!Object.prototype.hasOwnProperty.call(envData, key)) {
+      diff[key] = null; // or decide how to handle removed keys explicitly
+    }
+  }
+
+  return diff;
+}
+
+export const hasOwn = Function.prototype.call.bind(
+  Object.prototype.hasOwnProperty,
+);
+
+const objToString = Function.prototype.call.bind(Object.prototype.toString);
+function isPlainObject(obj: unknown): boolean {
+  return objToString(obj) === "[object Object]";
+}
+
+export function merge(target: any, source: any): any {
+  for (const key of Object.keys(source)) {
+    const newValue = source[key];
+    if (hasOwn(target, key)) {
+      if (Array.isArray(target[key]) && Array.isArray(newValue)) {
+        //
+      } else if (isPlainObject(target[key]) && isPlainObject(newValue)) {
+        target[key] = merge(target[key], newValue);
+        continue;
+      }
+    }
+    target[key] = newValue;
+  }
+  return target;
 }

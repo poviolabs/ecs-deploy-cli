@@ -2,6 +2,8 @@ import fs from "fs";
 import path from "path";
 import { dump } from "js-yaml";
 import {
+  calculateDiff,
+  loadConfig,
   resolveZeConfigItem,
   safeLoadConfig,
   ZeConfigs,
@@ -30,8 +32,20 @@ export async function bootstrap(argv: {
       continue;
     }
 
-    const envData = await resolveZeConfigItem(
-      ci,
+    const values = ci.values;
+
+    const templateName = ci.template;
+    let template;
+    if (templateName) {
+      template = await loadConfig(templateName, argv.pwd, argv.stage, false);
+      if (!values.some((x) => x.configFrom === templateName)) {
+        // start with the template
+        values.unshift({ configFrom: templateName, name: "@" });
+      }
+    }
+
+    let envData = await resolveZeConfigItem(
+      { values },
       {
         awsRegion: config.region,
         release: argv.release,
@@ -39,6 +53,10 @@ export async function bootstrap(argv: {
       argv.pwd,
       argv.stage,
     );
+
+    if (templateName) {
+      envData = calculateDiff(template, envData);
+    }
 
     const { destination } = ci;
 
