@@ -82,6 +82,8 @@ type EcsDeployArgv = {
   ci?: boolean;
   skipEcrExistsCheck?: boolean;
   verbose?: boolean;
+  watch?: boolean;
+  watchTimeout?: number;
 };
 
 export async function ecsDeploy(argv: EcsDeployArgv) {
@@ -304,10 +306,20 @@ export async function ecsDeploy(argv: EcsDeployArgv) {
     taskDefinition: newTaskDefinition.taskDefinitionArn,
   });
 
-  if (!argv.ci) {
+  if (argv.watch || !argv.ci) {
     logSuccess(`Service updated. You can exit by using CTRL-C now.`);
 
     logBanner("Service Monitor");
+
+    if (argv.watchTimeout || argv.ci) {
+      setTimeout(
+        () => {
+          console.log("Timeout");
+          process.exit(1);
+        },
+        argv.watchTimeout || 10 * 60 * 1000,
+      );
+    }
 
     const watch = ecsWatch(
       {
