@@ -26,13 +26,6 @@ class EcsDeployOptions implements YargsOptions {
   @YargOption({ envAlias: "WATCH" })
   watch!: boolean;
 
-  @YargOption({
-    envAlias: "WATCH_TIMEOUT",
-    default: 10 * 60 * 1000,
-    type: "number",
-  })
-  watchTimeout!: number;
-
   @YargOption({ envAlias: "SKIP_ECR_EXISTS_CHECK" })
   skipEcrExistsCheck!: boolean;
 

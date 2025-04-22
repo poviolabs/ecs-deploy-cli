@@ -155,9 +155,9 @@ Only build the image. Useful for testing.
 
 Use [docker buildx](https://docs.docker.com/buildx/working-with-buildx/) to build on ARM / Apple M1.
 
-#### --watch and --watchTimeout [ms]
+#### --watch
 
-Set a timeout how long to watch the ecs-deploy process for. Defaults to 10 minutes.
+In CI, wait for ecs-deploy to complete. This could take a while so set a timeout on the CI.
 
 ## How it works
 
