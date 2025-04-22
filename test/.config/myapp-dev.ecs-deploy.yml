@@ -89,6 +89,10 @@ configs:
       - name: "@"
         configFrom: backend-2.template
 
+      - name: "@"
+        configFrom: backend-not-exists.template
+        optional: true
+
       - name: database__host
         value: "localhost"
 

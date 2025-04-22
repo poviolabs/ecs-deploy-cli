@@ -81,6 +81,10 @@ configs:
         # load them onto the root
       - name: "@"
         configFrom: backend.template
+                      
+      - name: "@"
+        configFrom: backend.override
+        optional: true
 
         # simple value mapping
       - name: database__password
