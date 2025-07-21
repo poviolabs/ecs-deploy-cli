@@ -1,7 +1,7 @@
 import yargs from "yargs";
 import { YargOption, YargsOptions, getBuilder } from "../helpers/yargs.helper";
 import { safeLoadConfig } from "../helpers/ze-config";
-import { untagUnusedImages } from "./ecs-untag";
+import { untagUnusedImages } from "./ecr-untag";
 import { EcrDeployConfig } from "./ecs-deploy";
 
 class UntagOptions implements YargsOptions {
