@@ -172,6 +172,64 @@ Clean up old unused image tags from ECR repositories after deployment. This will
 
 Specify the number of days to keep image tags when using `--untagUnused`. Tags older than this number of days will be removed (default: 30).
 
+#### --untagPrefix
+
+Only untag images whose tags start with this prefix. Providing this argument overrides `build.prefix` property in config.
+
+#### ecr-untag
+
+Standalone command to untag images.
+
+## Required AWS IAM Permissions
+
+To use all features of this CLI (build, push, deploy, untag, describe, etc.), your IAM user/role needs the following permissions:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ecr:GetAuthorizationToken",
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:GetRepositoryPolicy",
+        "ecr:DescribeRepositories",
+        "ecr:ListImages",
+        "ecr:DescribeImages",
+        "ecr:BatchGetImage",
+        "ecr:InitiateLayerUpload",
+        "ecr:UploadLayerPart",
+        "ecr:CompleteLayerUpload",
+        "ecr:PutImage",
+        "ecr:BatchDeleteImage",
+        "ecs:DescribeServices",
+        "ecs:UpdateService",
+        "ecs:DescribeTaskDefinition",
+        "ecs:RegisterTaskDefinition",
+        "ecs:ListTasks",
+        "ecs:DescribeTasks"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetParameter",
+        "ssm:GetParameters",
+        "ssm:GetParametersByPath"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+**Notes:**
+- You may scope `Resource` to specific ARNs for tighter security.
+- If you use SSM for secrets or task definitions, SSM permissions are required.
+
 ## How it works
 
 The build script builds and pushes a Docker image to ECR.
