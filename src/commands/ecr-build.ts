@@ -48,6 +48,7 @@ export const EcrBuildConfigBuildItem = z.object({
   platform: z.string().default("linux/amd64"),
   environment: z.record(z.string()).optional(),
   environmentValues: ZeConfigItemValues.optional(),
+  prefix: z.string().optional(),
 });
 
 export type EcrBuildConfigBuildItemType = z.infer<
@@ -145,7 +146,8 @@ export async function ecrBuild(argv: EcrBuildArgv) {
     logBanner(`Image Details`);
 
     // load ECR details
-    const imageName = `${accountId}.dkr.ecr.${region}.amazonaws.com/${container.repoName}:${argv.release}`;
+    const tag = container.prefix ? `${container.prefix}${argv.release}` : argv.release;
+    const imageName = `${accountId}.dkr.ecr.${region}.amazonaws.com/${container.repoName}:${tag}`;
     logVariable(`image`, imageName);
 
     debugOutput["build"]["imageName"] = imageName;

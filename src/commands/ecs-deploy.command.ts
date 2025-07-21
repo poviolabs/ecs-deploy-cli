@@ -34,6 +34,15 @@ class EcsDeployOptions implements YargsOptions {
 
   @YargOption({ envAlias: "VERSION", type: "string", alias: "ecsVersion" })
   appVersion!: string;
+
+  @YargOption({ envAlias: "UNTAG_UNUSED", type: "boolean", default: false })
+  untagUnused!: boolean;
+
+  @YargOption({ envAlias: "DAYS", type: "number", default: 30 })
+  days!: number;
+
+  @YargOption({ envAlias: "UNTAG_PREFIX", type: "string" })
+  untagPrefix?: string;
 }
 
 export const command: yargs.CommandModule = {

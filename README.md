@@ -36,7 +36,7 @@ build:
     #context: ./test
     #dockerfile: Dockerfile
     platform: linux/amd64
-      
+
     environmentValues:
       # resolved at build time
       - name: RELEASE
@@ -62,7 +62,7 @@ taskDefinition:
             valueFrom: "func:timestamp"
           - name: TASK_ENV_VAR_1
             value: "static value"
-          
+
         # inserted into task definition and resolved at task init
         secrets:
           STAGE2: arn:aws:ssm:::parameter/myapp-dev/backend/task-definition
@@ -71,17 +71,17 @@ taskDefinition:
 configs:
   - name: backend
     destination: ./.config/myapp-dev.backend.yml
-    
+
     # optional template, to diff the resolved data from
-    template: 
-    
+    template:
+
     values:
         # load config from ./.config/${stage}.backend.template.yml
         # and interpolate ${arn:aws:ssm..} and ${env:ENV_VALUE} values
         # load them onto the root
       - name: "@"
         configFrom: backend.template
-                      
+
       - name: "@"
         configFrom: backend.override
         optional: true
@@ -89,11 +89,11 @@ configs:
         # simple value mapping
       - name: database__password
         valueFrom: arn:aws:ssm:::parameter/myapp-dev/database/password
-        
+
         # JSON object mapping
       - name: database
         valueFrom: arn:aws:ssm:::parameter/myapp-dev/database
-        
+
       - name: database__host
         valueFrom: env:DATABASE_HOST
 ```
@@ -126,7 +126,7 @@ database:
 ```bash
 yarn ecs-deploy --help
 
-# Build a new image from the current git commit and push to ECR 
+# Build a new image from the current git commit and push to ECR
 yarn ecs-deploy build <name> --stage my-stage
 
 # Push an existing image to ECR (tag of image needs to be the same as RELEASE or the git commit hash )
@@ -135,10 +135,12 @@ yarn ecs-deploy build <name> --stage my-stage
 # Deploy the task definition to ECS
 yarn ecs-deploy deploy [name] --stage my-stage
 
+# Deploy and clean up old unused image tags older than 30 days
+yarn ecs-deploy deploy [name] --stage my-stage --untagUnused --days 30
+
 # Generate a config script
 yarn ecs-deploy bootstrap [name] --stage my-stage
 ```
-
 ## Run Options
 
 Descriptions for useful flags. Use `--help` for a comprehensive list.
@@ -162,10 +164,17 @@ Use [docker buildx](https://docs.docker.com/buildx/working-with-buildx/) to buil
 #### --watch
 
 In CI, wait for ecs-deploy to complete. This could take a while so set a timeout on the CI.
+#### --untagUnused
+
+Clean up old unused image tags from ECR repositories after deployment. This will remove tags that are older than the specified number of days (default: 30) while preserving the currently deployed image and the newly deployed image.
+
+#### --days
+
+Specify the number of days to keep image tags when using `--untagUnused`. Tags older than this number of days will be removed (default: 30).
 
 ## How it works
 
-The build script builds and pushes a Docker image to ECR. 
+The build script builds and pushes a Docker image to ECR.
 
 The deploy script generates a ECS task definition using a template stored on SSM and deploys it to ECS.
 

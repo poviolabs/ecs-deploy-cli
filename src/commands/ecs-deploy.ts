@@ -12,6 +12,12 @@ import {
   ecsRegisterTaskDefinition,
   ecsUpdateService,
   ecsWatch,
+  ecrListImages,
+  ecrUntagImages,
+  ecsGetCurrentServiceTaskDefinition,
+  ecsGetCurrentTaskDefinition,
+  ecsListRunningTaskArns,
+  ecsDescribeTasks,
 } from "../helpers/aws-ecs.helper";
 import { resolveSSMPath } from "../helpers/aws-ssm.helper";
 import { printDiff } from "../helpers/diff.helper";
@@ -24,6 +30,7 @@ import {
 } from "../helpers/ze-config";
 import { z } from "zod";
 import { RegisterTaskDefinitionCommandInput } from "@aws-sdk/client-ecs";
+import { untagUnusedImages } from "./ecr-untag";
 
 const TaskDefinitionConfigContainerDefinition = z.object({
   name: z.string(),
@@ -53,7 +60,7 @@ export const TaskDefinitionConfig = z.object({
   containerDefinitions: z.array(TaskDefinitionConfigContainerDefinition),
 });
 
-const EcrDeployConfig = z.object({
+export const EcrDeployConfig = z.object({
   accountId: z.string().optional(),
   region: z.string().optional(),
 
@@ -69,6 +76,7 @@ const EcrDeployConfig = z.object({
     z.object({
       name: z.string(),
       repoName: z.string(),
+      prefix: z.string().optional(),
     }),
   ),
 });
@@ -82,7 +90,13 @@ type EcsDeployArgv = {
   ci?: boolean;
   skipEcrExistsCheck?: boolean;
   verbose?: boolean;
+<<<<<<< HEAD
   watch?: boolean;
+=======
+  untagUnused?: boolean;
+  days?: number;
+  untagPrefix?: string;
+>>>>>>> c5c2f85 (Add untagging logic)
 };
 
 export async function ecsDeploy(argv: EcsDeployArgv) {
@@ -193,7 +207,8 @@ export async function ecsDeploy(argv: EcsDeployArgv) {
       );
       if (buildContainer) {
         // if container image is found in the build config, we have the image - match the release
-        templateContainer.image = `${accountId}.dkr.ecr.${region}.amazonaws.com/${buildContainer.repoName}:${argv.release}`;
+        const tag = buildContainer.prefix ? `${buildContainer.prefix}${argv.release}` : argv.release;
+        templateContainer.image = `${accountId}.dkr.ecr.${region}.amazonaws.com/${buildContainer.repoName}:${tag}`;
         logInfo(`Using build image ${templateContainer.image}`);
 
         // load ECR details
@@ -202,7 +217,7 @@ export async function ecsDeploy(argv: EcsDeployArgv) {
             !(await ecrImageExists({
               region,
               repositoryName: buildContainer.repoName,
-              imageIds: [{ imageTag: argv.release }],
+              imageIds: [{ imageTag: tag }],
             }))
           ) {
             throw new Error("ECR image does not exist");
@@ -305,7 +320,25 @@ export async function ecsDeploy(argv: EcsDeployArgv) {
     taskDefinition: newTaskDefinition.taskDefinitionArn,
   });
 
+<<<<<<< HEAD
   if (argv.watch || !argv.ci) {
+=======
+  // Handle untagging of unused images if requested
+  if (argv.untagUnused) {
+    await untagUnusedImages({
+      region,
+      accountId,
+      clusterName,
+      serviceName,
+      config,
+      release: argv.release,
+      days: argv.days,
+      untagPrefix: argv.untagPrefix,
+    });
+  }
+
+  if (!argv.ci) {
+>>>>>>> c5c2f85 (Add untagging logic)
     logSuccess(`Service updated. You can exit by using CTRL-C now.`);
 
     logBanner("Service Monitor");
