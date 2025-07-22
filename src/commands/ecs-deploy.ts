@@ -90,13 +90,10 @@ type EcsDeployArgv = {
   ci?: boolean;
   skipEcrExistsCheck?: boolean;
   verbose?: boolean;
-<<<<<<< HEAD
   watch?: boolean;
-=======
   untagUnused?: boolean;
   days?: number;
   untagPrefix?: string;
->>>>>>> c5c2f85 (Add untagging logic)
 };
 
 export async function ecsDeploy(argv: EcsDeployArgv) {
@@ -320,9 +317,6 @@ export async function ecsDeploy(argv: EcsDeployArgv) {
     taskDefinition: newTaskDefinition.taskDefinitionArn,
   });
 
-<<<<<<< HEAD
-  if (argv.watch || !argv.ci) {
-=======
   // Handle untagging of unused images if requested
   if (argv.untagUnused) {
     await untagUnusedImages({
@@ -337,8 +331,7 @@ export async function ecsDeploy(argv: EcsDeployArgv) {
     });
   }
 
-  if (!argv.ci) {
->>>>>>> c5c2f85 (Add untagging logic)
+  if (argv.watch || !argv.ci) {
     logSuccess(`Service updated. You can exit by using CTRL-C now.`);
 
     logBanner("Service Monitor");
