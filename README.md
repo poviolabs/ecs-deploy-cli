@@ -176,7 +176,7 @@ Specify the number of days to keep image tags when using `--untagUnused`. Tags o
 
 Only untag images whose tags start with this prefix. Providing this argument overrides `build.prefix` property in config.
 
-#### ecr-untag
+#### untag
 
 Standalone command to untag images.
 

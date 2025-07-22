@@ -8,6 +8,7 @@ clusterName: myapp-dev
 build:
   - name: backend
     repoName: myapp-backend
+    #prefix: live-
     #context: ./test
     #dockerfile: Dockerfile
     environment:
