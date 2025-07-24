@@ -10,6 +10,8 @@ import {
   DescribeServicesCommand,
   Service,
   Deployment,
+  ListTasksCommand,
+  DescribeTasksCommand,
 } from "@aws-sdk/client-ecs";
 import {
   ECRClient,
@@ -17,6 +19,7 @@ import {
   GetAuthorizationTokenCommand,
   ImageIdentifier,
   ImageDetail,
+  BatchDeleteImageCommand,
 } from "@aws-sdk/client-ecr";
 function getEcrInstance(options: { region: string }) {
   return new ECRClient({
@@ -97,6 +100,48 @@ export async function ecrGetDockerCredentials(options: { region: string }) {
   };
 }
 
+export async function ecrListImages(options: {
+  region: string;
+  repositoryName: string;
+}) {
+  const ecr = getEcrInstance({ region: options.region });
+  try {
+    const images = (
+      await ecr.send(
+        new DescribeImagesCommand({
+          repositoryName: options.repositoryName,
+        }),
+      )
+    ).imageDetails as ImageDetail[];
+    return images;
+  } catch (e: any) {
+    if (e.name === "ImageNotFoundException") {
+      return [];
+    }
+    throw e;
+  }
+}
+
+export async function ecrUntagImages(options: {
+  region: string;
+  repositoryName: string;
+  imageIds: ImageIdentifier[];
+}) {
+  const ecr = getEcrInstance({ region: options.region });
+  try {
+    const result = await ecr.send(
+      new BatchDeleteImageCommand({
+        repositoryName: options.repositoryName,
+        imageIds: options.imageIds,
+      }),
+    );
+    logVerbose(JSON.stringify(result));
+    return result;
+  } catch (e: any) {
+    throw e;
+  }
+}
+
 function getECSInstance(options: { region: string }) {
   return new ECSClient({
     credentials: getCredentials(options),
@@ -152,6 +197,69 @@ export async function ecsUpdateService(options: {
   ).service;
   logVerbose(JSON.stringify(service));
   return service;
+}
+
+export async function ecsGetCurrentServiceTaskDefinition(options: {
+  region: string;
+  cluster: string;
+  service: string;
+}) {
+  const ecs = getECSInstance({ region: options.region });
+  try {
+    const services = await ecs.send(
+      new DescribeServicesCommand({
+        services: [options.service],
+        cluster: options.cluster,
+      }),
+    );
+
+    if (!services.services || services.services.length === 0) {
+      throw new Error(`Service ${options.service} not found`);
+    }
+
+    const service = services.services[0];
+    if (!service.taskDefinition) {
+      throw new Error(
+        `No task definition found for service ${options.service}`,
+      );
+    }
+
+    return service.taskDefinition;
+  } catch (e: any) {
+    throw e;
+  }
+}
+
+export async function ecsListRunningTaskArns(options: {
+  region: string;
+  cluster: string;
+  service: string;
+}) {
+  const ecs = getECSInstance({ region: options.region });
+  const result = await ecs.send(
+    new ListTasksCommand({
+      cluster: options.cluster,
+      serviceName: options.service,
+      desiredStatus: "RUNNING",
+    }),
+  );
+  return result.taskArns || [];
+}
+
+export async function ecsDescribeTasks(options: {
+  region: string;
+  cluster: string;
+  taskArns: string[];
+}) {
+  if (!options.taskArns.length) return [];
+  const ecs = getECSInstance({ region: options.region });
+  const result = await ecs.send(
+    new DescribeTasksCommand({
+      cluster: options.cluster,
+      tasks: options.taskArns,
+    }),
+  );
+  return result.tasks || [];
 }
 
 /**

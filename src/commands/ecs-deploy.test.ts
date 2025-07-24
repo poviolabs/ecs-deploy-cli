@@ -36,3 +36,40 @@ test("ecs-deploy", async () => {
     VERSION: "1.0.0",
   });
 });
+
+test("ecs-deploy with untag options", async () => {
+  const envDict = await resolveEnvDict(
+    {
+      stage: "myapp-dev",
+      pwd: ".",
+      release: "a-random-string",
+      untagUnused: true,
+      days: 7,
+    },
+    "us-east-1",
+    {
+      environment: [
+        { name: "STAGE", value: "myapp-dev" },
+        { name: "VERSION", value: "1.0.0" },
+      ],
+    },
+    {
+      environment: {
+        LEGACY_VAR: "test1",
+      },
+      environmentValues: [
+        { name: "RELEASE", valueFrom: "func:release" },
+        { name: "FIXED", value: "fixed" },
+      ],
+      name: "",
+      image: "",
+    },
+  );
+  assert.deepStrictEqual(envDict, {
+    LEGACY_VAR: "test1",
+    RELEASE: "a-random-string",
+    FIXED: "fixed",
+    STAGE: "myapp-dev",
+    VERSION: "1.0.0",
+  });
+});

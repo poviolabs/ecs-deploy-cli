@@ -12,6 +12,12 @@ import {
   ecsRegisterTaskDefinition,
   ecsUpdateService,
   ecsWatch,
+  ecrListImages,
+  ecrUntagImages,
+  ecsGetCurrentServiceTaskDefinition,
+  ecsGetCurrentTaskDefinition,
+  ecsListRunningTaskArns,
+  ecsDescribeTasks,
 } from "../helpers/aws-ecs.helper";
 import { resolveSSMPath } from "../helpers/aws-ssm.helper";
 import { printDiff } from "../helpers/diff.helper";
@@ -24,10 +30,15 @@ import {
 } from "../helpers/ze-config";
 import { z } from "zod";
 import { RegisterTaskDefinitionCommandInput } from "@aws-sdk/client-ecs";
+import { untagUnusedImages } from "./ecr-untag";
 
 const TaskDefinitionConfigContainerDefinition = z.object({
   name: z.string(),
   image: z.string(),
+  command: z.array(z.string()).optional(),
+  entryPoint: z.array(z.string()).optional(),
+  cpu: z.number().optional(),
+  memory: z.number().optional(),
   environment: z.record(z.string()).optional(),
   environmentValues: ZeConfigItemValues.optional(),
   secrets: z.record(z.string()).optional(),
@@ -53,7 +64,7 @@ export const TaskDefinitionConfig = z.object({
   containerDefinitions: z.array(TaskDefinitionConfigContainerDefinition),
 });
 
-const EcrDeployConfig = z.object({
+export const EcrDeployConfig = z.object({
   accountId: z.string().optional(),
   region: z.string().optional(),
 
@@ -69,6 +80,7 @@ const EcrDeployConfig = z.object({
     z.object({
       name: z.string(),
       repoName: z.string(),
+      prefix: z.string().optional(),
     }),
   ),
 });
@@ -82,6 +94,10 @@ type EcsDeployArgv = {
   ci?: boolean;
   skipEcrExistsCheck?: boolean;
   verbose?: boolean;
+  watch?: boolean;
+  untagUnused?: boolean;
+  days?: number;
+  untagPrefix?: string;
 };
 
 export async function ecsDeploy(argv: EcsDeployArgv) {
@@ -192,7 +208,10 @@ export async function ecsDeploy(argv: EcsDeployArgv) {
       );
       if (buildContainer) {
         // if container image is found in the build config, we have the image - match the release
-        templateContainer.image = `${accountId}.dkr.ecr.${region}.amazonaws.com/${buildContainer.repoName}:${argv.release}`;
+        const tag = buildContainer.prefix
+          ? `${buildContainer.prefix}${argv.release}`
+          : argv.release;
+        templateContainer.image = `${accountId}.dkr.ecr.${region}.amazonaws.com/${buildContainer.repoName}:${tag}`;
         logInfo(`Using build image ${templateContainer.image}`);
 
         // load ECR details
@@ -201,7 +220,7 @@ export async function ecsDeploy(argv: EcsDeployArgv) {
             !(await ecrImageExists({
               region,
               repositoryName: buildContainer.repoName,
-              imageIds: [{ imageTag: argv.release }],
+              imageIds: [{ imageTag: tag }],
             }))
           ) {
             throw new Error("ECR image does not exist");
@@ -225,7 +244,9 @@ export async function ecsDeploy(argv: EcsDeployArgv) {
       throw new Error(`Stage mismatch - tried to deploy to ${envDict.STAGE}`);
     }
     envDict.STAGE = argv.stage;
-    envDict.VERSION = version;
+    if (version) {
+      envDict.VERSION = version;
+    }
 
     templateContainer.environment = Object.entries(envDict).reduce(
       (acc, [name, value]) => {
@@ -234,6 +255,14 @@ export async function ecsDeploy(argv: EcsDeployArgv) {
       },
       [] as { name: string; value: string }[],
     );
+
+    if (configContainer.cpu) templateContainer.cpu = configContainer.cpu;
+    if (configContainer.memory)
+      templateContainer.memory = configContainer.memory;
+    if (configContainer.command)
+      templateContainer.command = configContainer.command;
+    if (configContainer.entryPoint)
+      templateContainer.entryPoint = configContainer.entryPoint;
 
     const secretsDict: Record<string, any> = {};
     if (templateContainer.secrets) {
@@ -304,7 +333,21 @@ export async function ecsDeploy(argv: EcsDeployArgv) {
     taskDefinition: newTaskDefinition.taskDefinitionArn,
   });
 
-  if (!argv.ci) {
+  // Handle untagging of unused images if requested
+  if (argv.untagUnused) {
+    await untagUnusedImages({
+      region,
+      accountId,
+      clusterName,
+      serviceName,
+      config,
+      release: argv.release,
+      days: argv.days,
+      untagPrefix: argv.untagPrefix,
+    });
+  }
+
+  if (argv.watch || !argv.ci) {
     logSuccess(`Service updated. You can exit by using CTRL-C now.`);
 
     logBanner("Service Monitor");

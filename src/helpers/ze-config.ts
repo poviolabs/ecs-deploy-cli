@@ -13,6 +13,7 @@ export const ZeConfigItemValue = z
     configFrom: z.string().optional(),
     config: z.any().optional(),
     value: z.string().optional(),
+    optional: z.boolean().optional().default(false),
   })
   .refine(
     (val) =>
@@ -140,6 +141,7 @@ export async function resolveZeConfigItem(
     config,
     objectFrom,
     value,
+    optional,
   } of values) {
     let edge = tree;
     let resolvedValue: any;
@@ -186,7 +188,12 @@ export async function resolveZeConfigItem(
        */
     } else if (configFrom) {
       // get the template and resolve the values
-      const unresolvedValue = await loadConfig(configFrom, cwd, stage, false);
+      const unresolvedValue = await loadConfig(
+        configFrom,
+        cwd,
+        stage,
+        optional,
+      );
       resolvedValue = await resolveConfig(unresolvedValue, {
         ...options,
         stage,

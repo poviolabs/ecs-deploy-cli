@@ -12,6 +12,7 @@ build:
   - name: backend
     repoName: myapp-dev
     platform: linux/amd64
+    #prefix: live-
 
 # deploy to ecs with `ecs-deploy deploy --stage myapp-dev`
 taskDefinition:

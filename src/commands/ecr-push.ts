@@ -30,6 +30,7 @@ export async function ecrPush(argv: {
           repoName: z.string(),
           region: z.string().optional(),
           accountId: z.string().optional(),
+          prefix: z.string().optional(),
         }),
       ),
     }),
@@ -71,7 +72,10 @@ export async function ecrPush(argv: {
   }
 
   // load ECR details
-  const imageName = `${accountId}.dkr.ecr.${region}.amazonaws.com/${container.repoName}:${argv.release}`;
+  const tag = container.prefix
+    ? `${container.prefix}${argv.release}`
+    : argv.release;
+  const imageName = `${accountId}.dkr.ecr.${region}.amazonaws.com/${container.repoName}:${tag}`;
   logVariable(`image`, imageName);
 
   const loadIdentity = async () => {

@@ -9,6 +9,7 @@ import { command as deployCommand } from "./commands/ecs-deploy.command";
 import { command as pushCommand } from "./commands/ecr-push.command";
 import { command as watchCommand } from "./commands/ecs-watch.command";
 import { command as bootstrapCommand } from "./commands/bootstrap.command";
+import { command as ecrUntagCommand } from "./commands/ecr-untag.command";
 import { logError, logInfo } from "./helpers/cli.helper";
 import { getVersion } from "./helpers/version.helper";
 
@@ -21,6 +22,7 @@ yargs(hideBin(process.argv))
   .command(deployCommand)
   .command(watchCommand)
   .command(bootstrapCommand)
+  .command(ecrUntagCommand)
   .help()
   .demandCommand(1)
   .strictCommands(true)
