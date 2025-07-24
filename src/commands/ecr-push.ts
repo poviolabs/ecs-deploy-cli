@@ -72,7 +72,9 @@ export async function ecrPush(argv: {
   }
 
   // load ECR details
-  const tag = container.prefix ? `${container.prefix}${argv.release}` : argv.release;
+  const tag = container.prefix
+    ? `${container.prefix}${argv.release}`
+    : argv.release;
   const imageName = `${accountId}.dkr.ecr.${region}.amazonaws.com/${container.repoName}:${tag}`;
   logVariable(`image`, imageName);
 

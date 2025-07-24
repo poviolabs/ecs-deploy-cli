@@ -1,5 +1,16 @@
-import { ecrListImages, ecrUntagImages, ecsListRunningTaskArns, ecsDescribeTasks } from "../helpers/aws-ecs.helper";
-import { logBanner, logInfo, logNotice, logSuccess, logVariable } from "../helpers/cli.helper";
+import {
+  ecrListImages,
+  ecrUntagImages,
+  ecsListRunningTaskArns,
+  ecsDescribeTasks,
+} from "../helpers/aws-ecs.helper";
+import {
+  logBanner,
+  logInfo,
+  logNotice,
+  logSuccess,
+  logVariable,
+} from "../helpers/cli.helper";
 
 export type UntagArgs = {
   region: string;
@@ -47,11 +58,15 @@ export async function untagUnusedImages(args: UntagArgs) {
 
   // Add the new release tag(s) to the protected tags
   for (const buildContainer of args.config.build) {
-    const tag = buildContainer.prefix ? `${buildContainer.prefix}${args.release}` : args.release;
+    const tag = buildContainer.prefix
+      ? `${buildContainer.prefix}${args.release}`
+      : args.release;
     runningImageTags.add(tag);
   }
 
-  logInfo(`Protected tags (from running tasks): ${Array.from(runningImageTags).join(", ")}`);
+  logInfo(
+    `Protected tags (from running tasks): ${Array.from(runningImageTags).join(", ")}`,
+  );
 
   // Process each build container
   for (const buildContainer of args.config.build) {
@@ -94,7 +109,9 @@ export async function untagUnusedImages(args: UntagArgs) {
 
       // If untagPrefix is set, only untag images whose tags start with the prefix
       if (args.untagPrefix) {
-        const hasMatchingPrefix = image.imageTags.some((tag) => tag.startsWith(args.untagPrefix!));
+        const hasMatchingPrefix = image.imageTags.some((tag) =>
+          tag.startsWith(args.untagPrefix!),
+        );
         if (!hasMatchingPrefix) {
           return false;
         }
@@ -118,7 +135,9 @@ export async function untagUnusedImages(args: UntagArgs) {
     );
 
     if (imageIds.length === 0) {
-      logInfo(`No image tags to untag in repository ${buildContainer.repoName}`);
+      logInfo(
+        `No image tags to untag in repository ${buildContainer.repoName}`,
+      );
       continue;
     }
 

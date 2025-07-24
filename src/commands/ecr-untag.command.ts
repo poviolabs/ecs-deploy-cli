@@ -39,10 +39,10 @@ export const command: yargs.CommandModule = {
     const region = taskDefinition.region || config.region;
     const clusterName = taskDefinition.clusterName || config.clusterName;
     const serviceName = taskDefinition.serviceName || config.serviceName;
-    if (!accountId) throw new Error('accountId not defined');
-    if (!region) throw new Error('region not defined');
-    if (!clusterName) throw new Error('clusterName not defined');
-    if (!serviceName) throw new Error('serviceName not defined');
+    if (!accountId) throw new Error("accountId not defined");
+    if (!region) throw new Error("region not defined");
+    if (!clusterName) throw new Error("clusterName not defined");
+    if (!serviceName) throw new Error("serviceName not defined");
     await untagUnusedImages({
       region,
       accountId,

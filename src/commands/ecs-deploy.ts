@@ -204,7 +204,9 @@ export async function ecsDeploy(argv: EcsDeployArgv) {
       );
       if (buildContainer) {
         // if container image is found in the build config, we have the image - match the release
-        const tag = buildContainer.prefix ? `${buildContainer.prefix}${argv.release}` : argv.release;
+        const tag = buildContainer.prefix
+          ? `${buildContainer.prefix}${argv.release}`
+          : argv.release;
         templateContainer.image = `${accountId}.dkr.ecr.${region}.amazonaws.com/${buildContainer.repoName}:${tag}`;
         logInfo(`Using build image ${templateContainer.image}`);
 

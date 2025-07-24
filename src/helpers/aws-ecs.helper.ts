@@ -219,7 +219,9 @@ export async function ecsGetCurrentServiceTaskDefinition(options: {
 
     const service = services.services[0];
     if (!service.taskDefinition) {
-      throw new Error(`No task definition found for service ${options.service}`);
+      throw new Error(
+        `No task definition found for service ${options.service}`,
+      );
     }
 
     return service.taskDefinition;
@@ -239,7 +241,7 @@ export async function ecsListRunningTaskArns(options: {
       cluster: options.cluster,
       serviceName: options.service,
       desiredStatus: "RUNNING",
-    })
+    }),
   );
   return result.taskArns || [];
 }
@@ -255,7 +257,7 @@ export async function ecsDescribeTasks(options: {
     new DescribeTasksCommand({
       cluster: options.cluster,
       tasks: options.taskArns,
-    })
+    }),
   );
   return result.tasks || [];
 }

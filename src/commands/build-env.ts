@@ -66,7 +66,9 @@ export async function buildEnv(argv: {
   if (!repoName) {
     throw new Error(`repoName not defined`);
   }
-  const tag = container?.prefix ? `${container.prefix}${argv.release}` : argv.release;
+  const tag = container?.prefix
+    ? `${container.prefix}${argv.release}`
+    : argv.release;
   env.ECR_REPOSITORY = repoName;
   env.IMAGE_URL = `${accountId}.dkr.ecr.${region}.amazonaws.com/${repoName}:${tag}`;
 
