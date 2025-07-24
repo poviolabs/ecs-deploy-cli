@@ -35,6 +35,10 @@ import { untagUnusedImages } from "./ecr-untag";
 const TaskDefinitionConfigContainerDefinition = z.object({
   name: z.string(),
   image: z.string(),
+  command: z.array(z.string()).optional(),
+  entryPoint: z.array(z.string()).optional(),
+  cpu: z.number().optional(),
+  memory: z.number().optional(),
   environment: z.record(z.string()).optional(),
   environmentValues: ZeConfigItemValues.optional(),
   secrets: z.record(z.string()).optional(),
@@ -240,7 +244,9 @@ export async function ecsDeploy(argv: EcsDeployArgv) {
       throw new Error(`Stage mismatch - tried to deploy to ${envDict.STAGE}`);
     }
     envDict.STAGE = argv.stage;
-    envDict.VERSION = version;
+    if (version) {
+      envDict.VERSION = version;
+    }
 
     templateContainer.environment = Object.entries(envDict).reduce(
       (acc, [name, value]) => {
@@ -249,6 +255,14 @@ export async function ecsDeploy(argv: EcsDeployArgv) {
       },
       [] as { name: string; value: string }[],
     );
+
+    if (configContainer.cpu) templateContainer.cpu = configContainer.cpu;
+    if (configContainer.memory)
+      templateContainer.memory = configContainer.memory;
+    if (configContainer.command)
+      templateContainer.command = configContainer.command;
+    if (configContainer.entryPoint)
+      templateContainer.entryPoint = configContainer.entryPoint;
 
     const secretsDict: Record<string, any> = {};
     if (templateContainer.secrets) {
