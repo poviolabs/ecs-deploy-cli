@@ -36,6 +36,9 @@ build:
     #context: ./test
     #dockerfile: Dockerfile
     platform: linux/amd64
+    # Docker Buildx Bake support
+    #bakeFile: "./docker-bake.hcl"
+    #bakeTarget: "backend"  # optional: specific target
 
     environmentValues:
       # resolved at build time
@@ -160,6 +163,24 @@ Only build the image. Useful for testing.
 #### --buildx
 
 Use [docker buildx](https://docs.docker.com/buildx/working-with-buildx/) to build on ARM / Apple M1.
+
+#### Docker Buildx Bake Support
+
+Enable Docker Buildx Bake by adding `bake-file` to your build configuration:
+
+```yaml
+build:
+  - name: backend
+    repoName: myapp-backend
+    bake-file: "./docker-bake.hcl"
+    bake-target: "api-final"  # optional: specific target, otherwise builds all
+```
+
+When `bake-file` is present, the CLI automatically:
+- Uses `docker buildx bake` instead of standard Docker build
+- Sets `--set "*.tags=<generated-tag>"` to override all image tags
+- Supports HCL, JSON, and YAML bake files
+- Optionally targets specific bake targets
 
 #### --watch
 

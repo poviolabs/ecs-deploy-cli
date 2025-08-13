@@ -11,6 +11,8 @@ build:
     #prefix: live-
     #context: ./test
     #dockerfile: Dockerfile
+    # bakeFile: ./docker-bake.hcl
+    # bakeTarget: "backend-final"
     environment:
       # used at build time
       BUILD_VAR: value

@@ -108,9 +108,40 @@ export class Docker {
       buildx?: boolean;
       platform?: string;
       push: boolean;
+      bake?: string;
+      bakeTarget?: string;
     },
     options?: CommandOptions,
   ) {
+    if (buildOptions.bake) {
+      // Use Docker Buildx Bake
+      await this.execute("buildx install");
+      await this.execute("buildx create --name ecs-build --use");
+
+      try {
+        let command = `buildx bake -f "${buildOptions.bake}" `;
+
+        // Add target if specified
+        if (buildOptions.bakeTarget) {
+          command += `${buildOptions.bakeTarget} `;
+        }
+
+
+        command += `--set "*.tags=${buildOptions.imageName}" `;
+
+
+        if (buildOptions.push) {
+          command += "--push ";
+        }
+
+        return this.handleResponse(command, options, () => {
+          return undefined;
+        });
+      } finally {
+        await this.execute("buildx rm ecs-build");
+      }
+    }
+
     if (buildOptions.buildx) {
       await this.execute("buildx install");
       await this.execute("buildx create --name ecs-build --use");

@@ -45,10 +45,12 @@ export const EcrBuildConfigBuildItem = z.object({
   accountId: z.string().optional(),
   context: z.string().optional(),
   dockerfile: z.string().optional(),
-  platform: z.string().default("linux/amd64"),
+  platform: z.string().optional().default("linux/amd64"),
   environment: z.record(z.string()).optional(),
   environmentValues: ZeConfigItemValues.optional(),
   prefix: z.string().optional(),
+  bakeFile: z.string().optional(),
+  bakeTarget: z.string().optional(),
 });
 
 export type EcrBuildConfigBuildItemType = z.infer<
@@ -205,30 +207,54 @@ export async function ecrBuild(argv: EcrBuildArgv) {
     if (!argv.dryRun) {
       if (!docker) throw new Error("Docker not initialized");
 
-      // build image
-      if (argv.buildx || !(await docker.imageExists(imageName)).data) {
-        logInfo(
-          argv.buildx && !argv.skipPush
-            ? "Building and pushing docker image"
-            : "Building docker image",
-        );
+      // Check if bake is enabled via config
+      const isBakeEnabled = container.bakeFile;
 
-        if (argv.buildx) {
+      if (isBakeEnabled || argv.buildx || !(await docker.imageExists(imageName)).data) {
+        if (isBakeEnabled) {
+          const bakeFile = container.bakeFile;
+          const bakeTarget = container.bakeTarget;
+
+          logInfo(`Building with Docker Buildx Bake from ${bakeFile}${bakeTarget ? ` (target: ${bakeTarget})` : ''}`);
           await loadDocker();
-        }
 
-        await docker.imageBuild(
-          {
-            imageName,
-            src: [dockerfilePath],
-            buildargs,
-            context: dockerfileContext,
-            buildx: argv.buildx,
-            platform: container.platform,
-            push: !!argv.buildx && !argv.skipPush,
-          },
-          { verbose: argv.verbose },
-        );
+          await docker.imageBuild(
+            {
+              imageName,
+              src: [dockerfilePath],
+              buildargs,
+              context: dockerfileContext,
+              buildx: true,
+              push: !argv.skipPush,
+              bake: bakeFile,
+              bakeTarget: bakeTarget,
+            },
+            { verbose: argv.verbose },
+          );
+        } else {
+          logInfo(
+            argv.buildx && !argv.skipPush
+              ? "Building and pushing docker image"
+              : "Building docker image",
+          );
+
+          if (argv.buildx) {
+            await loadDocker();
+          }
+
+          await docker.imageBuild(
+            {
+              imageName,
+              src: [dockerfilePath],
+              buildargs,
+              context: dockerfileContext,
+              buildx: argv.buildx,
+              platform: container.platform,
+              push: !!argv.buildx && !argv.skipPush,
+            },
+            { verbose: argv.verbose },
+          );
+        }
       }
     }
 
