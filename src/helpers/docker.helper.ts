@@ -126,9 +126,12 @@ export class Docker {
           command += `${buildOptions.bakeTarget} `;
         }
 
+        // pass build arguments
+        for (const [k, v] of Object.entries(buildOptions.buildargs || {})) {
+          command += `--set "*.args.${k}=${v}" `;
+        }
 
         command += `--set "*.tags=${buildOptions.imageName}" `;
-
 
         if (buildOptions.push) {
           command += "--push ";
