@@ -260,11 +260,15 @@ export async function ecrBuild(argv: EcrBuildArgv) {
 
     if (!argv.dryRun) {
       if (!argv.skipPush) {
-        if (!argv.buildx) {
+        // Only push if we didn't already push during buildx build or bake
+        const wasAlreadyPushed = argv.buildx || container.bakeFile;
+        if (!wasAlreadyPushed) {
           await loadDocker();
           if (!docker) throw new Error("Docker not initialized");
           logInfo("Pushing to ECR...");
           await docker.imagePush(imageName, { verbose: true });
+        } else {
+          logInfo("Image already pushed during build process");
         }
 
         logInfo(
